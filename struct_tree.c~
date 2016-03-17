@@ -1,0 +1,25 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+struct tree;
+struct attributes;
+enum type {tree, word};
+struct attributes{ char * key;
+};
+struct tree { char * label;
+};
+                           //typage des nœuds: permet de savoir si un nœud construit
+                           //un arbre ou s'il s'agit simplement de texte
+                          //nom de l'attribut
+//valeur de l'attribut struct attributes * next; //attribut suivant
+char * value;
+                            //étiquette du nœud
+                            //nœud vide, par exemple <br/>
+                            //nœud suivi d'un espace
+                            //type du nœud. nullary doit être true s tp vaut word
+
+bool nullary;
+bool space;
+enum type tp;
+struct attributes * attr; //attributs du nœud
+struct tree * daughters; //fils gauche, qui doit être NULL si nullary est true struct tree * right; //frère 
