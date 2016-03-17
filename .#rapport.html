@@ -1,1 +1,0 @@
-kovila@MBP-de-Kovila.421
