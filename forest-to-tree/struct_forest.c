@@ -13,7 +13,7 @@ tree create_tree (char* label){
   //daughters = NULL
   //right = NULL
 }
-void destroy_tree (tree t){}
+void destroy_tree (tree t){//recursif}
 
 forest create_forest (void){
   return NULL;
@@ -29,7 +29,9 @@ void forest_to_xml (forest f){
   //racine -> premier fils jusqu'au feuille ->
   //chaque fois qu'on remonte on passe au frere
 }
-
+  
+ 
+  
 
 int main (void){
 
