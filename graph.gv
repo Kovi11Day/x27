@@ -1,0 +1,19 @@
+    
+
+graph{
+text_1 -- ceci_2
+div_0 -- text_1
+text_3 -- est_4
+div_0 -- text_3
+text_5 -- un_6
+div_0 -- text_5
+text_7 -- lien_8
+div_0 -- text_7
+text_10 -- labri_11
+a_9 -- text_10
+div_0 -- a_9
+text_11 -- de_12
+div_0 -- text_11
+text_13 -- bdx_14
+div_0 -- text_13
+}
