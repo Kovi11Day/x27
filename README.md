@@ -13,6 +13,7 @@ du makefile
 
 >git add -A
 >git add -m "ecrire ce que vous avez modifier"
+
 >git push
 
 IMPORTANT: avant de faire PUSH assurer vous que le programme compile et marche correctement
