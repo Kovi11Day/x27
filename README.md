@@ -12,6 +12,7 @@ REMARQUE: si le makefile ne marche pas error -ll
 du makefile
 
 >git add -A
+
 >git add -m "ecrire ce que vous avez modifier"
 
 >git push
