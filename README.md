@@ -15,7 +15,7 @@ du makefile
 
 >git add -A
 
->git add -m "ecrire ce que vous avez modifier"
+>git commit -m "ecrire ce que vous avez modifier"
 
 >git push
 
