@@ -21,16 +21,17 @@ forest create_forest (void){
 
 //Pas encore bien testé :Ibrahim
 void destroy_tree (tree root){
-	while(root!=NULL){
-	if((root->daughter && root->right)==NULL)
-		free(root);
-	else {
-		if(root->right==NULL) 
-			destroy_tree(root->daughters);
-		else
-			destroy_tree(root->right);
+
+while(root!=NULL){
+if((root->daughter && root->right)==NULL)
+	free(root);
+else {
+	if(root->right==NULL) 
+	destroy_tree(root->daughters);
+else
+	destroy_tree(root->right);
 	}	
- 
+}
 //to go faster
 tree create_text_tree (char* word){}
 
