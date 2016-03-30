@@ -13,9 +13,11 @@ REMARQUE: si le makefile ne marche pas error -ll
 -ll par -lfl dans la ligne: LDLIBS=-ll -ly -lm 
 du makefile
 
+>git pull 
+
 >git add -A
 
->git add -m "ecrire ce que vous avez modifier"
+>git commit -m "ecrire ce que vous avez modifier"
 
 >git push
 

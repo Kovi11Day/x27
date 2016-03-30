@@ -9,25 +9,13 @@
 
 %x TEXT_MODE
 %option noinput nounput
-NB ([[:digit:]]+(\.[[:digit:]]*)?)|(\.[[:digit:]]+)
+
 %%
 
 [[:alpha:]]+ {
   yylval.name = strdup(yytext);
   return TAG;
-}
-{NB} { yyval.value=atof(yytext);
-        return NUM;
-         return ID;}
-
-\+         return '+';
-\*         return '*';
-\(         return '(';
-\)         return ')';
-\-         return '-';
-\/         return '/';
-\%         return '%';
-\*\*|\^    return POW;
+ }
 
 "}" {return CLOSE;}
 
