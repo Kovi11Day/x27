@@ -1,0 +1,191 @@
+Grammar
+
+    0 $accept: arbre $end
+
+    1 arbre: balise chaine CLOSE
+
+    2 chaine: chaine intermediaire
+    3       | /* empty */
+
+    4 intermediaire: EMPTY_NODE
+    5              | texte
+    6              | arbre
+
+    7 texte: TEXT
+
+    8 balise: TAG
+    9       | TAG suite_cle_valeur
+
+   10 suite_cle_valeur: suite_cle_valeur KEY VALUE
+   11                 | KEY VALUE
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+KEY (258) 10 11
+VALUE (259) 10 11
+TAG (260) 8 9
+CLOSE (261) 1
+TEXT (262) 7
+EMPTY_NODE (263) 4
+
+
+Nonterminals, with rules where they appear
+
+$accept (9)
+    on left: 0
+arbre (10)
+    on left: 1, on right: 0 6
+chaine (11)
+    on left: 2 3, on right: 1 2
+intermediaire (12)
+    on left: 4 5 6, on right: 2
+texte (13)
+    on left: 7, on right: 5
+balise (14)
+    on left: 8 9, on right: 1
+suite_cle_valeur (15)
+    on left: 10 11, on right: 9 10
+
+
+state 0
+
+    0 $accept: . arbre $end
+
+    TAG  shift, and go to state 1
+
+    arbre   go to state 2
+    balise  go to state 3
+
+
+state 1
+
+    8 balise: TAG .
+    9       | TAG . suite_cle_valeur
+
+    KEY  shift, and go to state 4
+
+    $default  reduce using rule 8 (balise)
+
+    suite_cle_valeur  go to state 5
+
+
+state 2
+
+    0 $accept: arbre . $end
+
+    $end  shift, and go to state 6
+
+
+state 3
+
+    1 arbre: balise . chaine CLOSE
+
+    $default  reduce using rule 3 (chaine)
+
+    chaine  go to state 7
+
+
+state 4
+
+   11 suite_cle_valeur: KEY . VALUE
+
+    VALUE  shift, and go to state 8
+
+
+state 5
+
+    9 balise: TAG suite_cle_valeur .
+   10 suite_cle_valeur: suite_cle_valeur . KEY VALUE
+
+    KEY  shift, and go to state 9
+
+    $default  reduce using rule 9 (balise)
+
+
+state 6
+
+    0 $accept: arbre $end .
+
+    $default  accept
+
+
+state 7
+
+    1 arbre: balise chaine . CLOSE
+    2 chaine: chaine . intermediaire
+
+    TAG         shift, and go to state 1
+    CLOSE       shift, and go to state 10
+    TEXT        shift, and go to state 11
+    EMPTY_NODE  shift, and go to state 12
+
+    arbre          go to state 13
+    intermediaire  go to state 14
+    texte          go to state 15
+    balise         go to state 3
+
+
+state 8
+
+   11 suite_cle_valeur: KEY VALUE .
+
+    $default  reduce using rule 11 (suite_cle_valeur)
+
+
+state 9
+
+   10 suite_cle_valeur: suite_cle_valeur KEY . VALUE
+
+    VALUE  shift, and go to state 16
+
+
+state 10
+
+    1 arbre: balise chaine CLOSE .
+
+    $default  reduce using rule 1 (arbre)
+
+
+state 11
+
+    7 texte: TEXT .
+
+    $default  reduce using rule 7 (texte)
+
+
+state 12
+
+    4 intermediaire: EMPTY_NODE .
+
+    $default  reduce using rule 4 (intermediaire)
+
+
+state 13
+
+    6 intermediaire: arbre .
+
+    $default  reduce using rule 6 (intermediaire)
+
+
+state 14
+
+    2 chaine: chaine intermediaire .
+
+    $default  reduce using rule 2 (chaine)
+
+
+state 15
+
+    5 intermediaire: texte .
+
+    $default  reduce using rule 5 (intermediaire)
+
+
+state 16
+
+   10 suite_cle_valeur: suite_cle_valeur KEY VALUE .
+
+    $default  reduce using rule 10 (suite_cle_valeur)
