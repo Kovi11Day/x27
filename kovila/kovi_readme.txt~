@@ -15,14 +15,3 @@ $$ = create_attribute($1, $2);
 ;
 
 ////////////GRAMMAR EXPRESSION///////
-
-
-////////////////////GTREE////////////////////
-
-enum type {where, let, in..}
-struct gtree{
-       Expression* expr;
-       char* iden;
-       enum type type
-       right, left daughters??
-       }

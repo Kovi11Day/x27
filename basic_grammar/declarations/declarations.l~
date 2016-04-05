@@ -11,17 +11,15 @@
 
 %%
 
-[=;] {return *yytext;}
-
-in {return IN;}
-
-where {return WHERE;}
-
 arith {return ARITH_EXPR;}
 
 let {return LET;}
 
 rec {return REC;}
+
+identificateur {return IDEN;}
+
+
 
 key {return KEY;}
 
@@ -29,8 +27,9 @@ value {return VALUE;}
 
 "<br/>" {return EMPTY_NODE;}
 
-[[:alpha:]]+ {return IDEN;}
-[[:alpha:]]+"{" {return TAG;}
+[[:alpha:]]+ {
+  return TAG;
+}
 
 "}" {return CLOSE;}
 

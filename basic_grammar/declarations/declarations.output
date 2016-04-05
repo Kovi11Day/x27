@@ -1,223 +1,286 @@
-Terminals which are not used
+Terminaux inutilisés dans la grammaire
 
-   LET
-   IDEN
    REC
 
 
-Grammar
+Grammaire
 
-    0 $accept: expression $end
+    0 $accept: declaration $end
 
-    1 expression: arbre
-    2           | ARITH_EXPR
+    1 declaration: LET affectation ';'
 
-    3 arbre: balise chaine CLOSE
+    2 affectation: IDEN '=' expression
 
-    4 chaine: chaine intermediaire
-    5       | /* empty */
+    3 expression: arbre
+    4           | ARITH_EXPR
 
-    6 intermediaire: EMPTY_NODE
-    7              | texte
-    8              | arbre
+    5 arbre: balise chaine CLOSE
 
-    9 texte: TEXT
+    6 chaine: chaine intermediaire
+    7       | %empty
 
-   10 balise: TAG
-   11       | TAG suite_cle_valeur
+    8 intermediaire: EMPTY_NODE
+    9              | texte
+   10              | arbre
+   11              | IDEN
 
-   12 suite_cle_valeur: suite_cle_valeur KEY VALUE
-   13                 | KEY VALUE
+   12 texte: TEXT
+
+   13 balise: TAG
+   14       | TAG suite_cle_valeur
+
+   15 suite_cle_valeur: suite_cle_valeur KEY VALUE
+   16                 | KEY VALUE
 
 
-Terminals, with rules where they appear
+Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
+';' (59) 1
+'=' (61) 2
 error (256)
-KEY (258) 12 13
-VALUE (259) 12 13
-TAG (260) 10 11
-CLOSE (261) 3
-TEXT (262) 9
-EMPTY_NODE (263) 6
-ARITH_EXPR (264) 2
-LET (265)
-IDEN (266)
+KEY (258) 15 16
+VALUE (259) 15 16
+TAG (260) 13 14
+CLOSE (261) 5
+TEXT (262) 12
+EMPTY_NODE (263) 8
+ARITH_EXPR (264) 4
+LET (265) 1
+IDEN (266) 2 11
 REC (267)
 
 
-Nonterminals, with rules where they appear
+Non-terminaux, suivis des règles où ils apparaissent
 
-$accept (13)
-    on left: 0
-expression (14)
-    on left: 1 2, on right: 0
-arbre (15)
-    on left: 3, on right: 1 8
-chaine (16)
-    on left: 4 5, on right: 3 4
-intermediaire (17)
-    on left: 6 7 8, on right: 4
-texte (18)
-    on left: 9, on right: 7
-balise (19)
-    on left: 10 11, on right: 3
-suite_cle_valeur (20)
-    on left: 12 13, on right: 11 12
+$accept (15)
+    à gauche: 0
+declaration (16)
+    à gauche: 1, à droite: 0
+affectation (17)
+    à gauche: 2, à droite: 1
+expression (18)
+    à gauche: 3 4, à droite: 2
+arbre (19)
+    à gauche: 5, à droite: 3 10
+chaine (20)
+    à gauche: 6 7, à droite: 5 6
+intermediaire (21)
+    à gauche: 8 9 10 11, à droite: 6
+texte (22)
+    à gauche: 12, à droite: 9
+balise (23)
+    à gauche: 13 14, à droite: 5
+suite_cle_valeur (24)
+    à gauche: 15 16, à droite: 14 15
 
 
-state 0
+État 0
 
-    0 $accept: . expression $end
+    0 $accept: . declaration $end
 
-    TAG         shift, and go to state 1
-    ARITH_EXPR  shift, and go to state 2
+    LET  décalage et aller à l'état 1
 
-    expression  go to state 3
-    arbre       go to state 4
-    balise      go to state 5
+    declaration  aller à l'état 2
 
 
-state 1
+État 1
 
-   10 balise: TAG .
-   11       | TAG . suite_cle_valeur
+    1 declaration: LET . affectation ';'
 
-    KEY  shift, and go to state 6
+    IDEN  décalage et aller à l'état 3
 
-    $default  reduce using rule 10 (balise)
+    affectation  aller à l'état 4
 
-    suite_cle_valeur  go to state 7
 
+État 2
 
-state 2
+    0 $accept: declaration . $end
 
-    2 expression: ARITH_EXPR .
+    $end  décalage et aller à l'état 5
 
-    $default  reduce using rule 2 (expression)
 
+État 3
 
-state 3
+    2 affectation: IDEN . '=' expression
 
-    0 $accept: expression . $end
+    '='  décalage et aller à l'état 6
 
-    $end  shift, and go to state 8
 
+État 4
 
-state 4
+    1 declaration: LET affectation . ';'
 
-    1 expression: arbre .
+    ';'  décalage et aller à l'état 7
 
-    $default  reduce using rule 1 (expression)
 
+État 5
 
-state 5
+    0 $accept: declaration $end .
 
-    3 arbre: balise . chaine CLOSE
+    $défaut  accepter
 
-    $default  reduce using rule 5 (chaine)
 
-    chaine  go to state 9
+État 6
 
+    2 affectation: IDEN '=' . expression
 
-state 6
+    TAG         décalage et aller à l'état 8
+    ARITH_EXPR  décalage et aller à l'état 9
 
-   13 suite_cle_valeur: KEY . VALUE
+    expression  aller à l'état 10
+    arbre       aller à l'état 11
+    balise      aller à l'état 12
 
-    VALUE  shift, and go to state 10
 
+État 7
 
-state 7
+    1 declaration: LET affectation ';' .
 
-   11 balise: TAG suite_cle_valeur .
-   12 suite_cle_valeur: suite_cle_valeur . KEY VALUE
+    $défaut  réduction par utilisation de la règle 1 (declaration)
 
-    KEY  shift, and go to state 11
 
-    $default  reduce using rule 11 (balise)
+État 8
 
+   13 balise: TAG .
+   14       | TAG . suite_cle_valeur
 
-state 8
+    KEY  décalage et aller à l'état 13
 
-    0 $accept: expression $end .
+    $défaut  réduction par utilisation de la règle 13 (balise)
 
-    $default  accept
+    suite_cle_valeur  aller à l'état 14
 
 
-state 9
+État 9
 
-    3 arbre: balise chaine . CLOSE
-    4 chaine: chaine . intermediaire
+    4 expression: ARITH_EXPR .
 
-    TAG         shift, and go to state 1
-    CLOSE       shift, and go to state 12
-    TEXT        shift, and go to state 13
-    EMPTY_NODE  shift, and go to state 14
+    $défaut  réduction par utilisation de la règle 4 (expression)
 
-    arbre          go to state 15
-    intermediaire  go to state 16
-    texte          go to state 17
-    balise         go to state 5
 
+État 10
 
-state 10
+    2 affectation: IDEN '=' expression .
 
-   13 suite_cle_valeur: KEY VALUE .
+    $défaut  réduction par utilisation de la règle 2 (affectation)
 
-    $default  reduce using rule 13 (suite_cle_valeur)
 
+État 11
 
-state 11
+    3 expression: arbre .
 
-   12 suite_cle_valeur: suite_cle_valeur KEY . VALUE
+    $défaut  réduction par utilisation de la règle 3 (expression)
 
-    VALUE  shift, and go to state 18
 
+État 12
 
-state 12
+    5 arbre: balise . chaine CLOSE
 
-    3 arbre: balise chaine CLOSE .
+    $défaut  réduction par utilisation de la règle 7 (chaine)
 
-    $default  reduce using rule 3 (arbre)
+    chaine  aller à l'état 15
 
 
-state 13
+État 13
 
-    9 texte: TEXT .
+   16 suite_cle_valeur: KEY . VALUE
 
-    $default  reduce using rule 9 (texte)
+    VALUE  décalage et aller à l'état 16
 
 
-state 14
+État 14
 
-    6 intermediaire: EMPTY_NODE .
+   14 balise: TAG suite_cle_valeur .
+   15 suite_cle_valeur: suite_cle_valeur . KEY VALUE
 
-    $default  reduce using rule 6 (intermediaire)
+    KEY  décalage et aller à l'état 17
 
+    $défaut  réduction par utilisation de la règle 14 (balise)
 
-state 15
 
-    8 intermediaire: arbre .
+État 15
 
-    $default  reduce using rule 8 (intermediaire)
+    5 arbre: balise chaine . CLOSE
+    6 chaine: chaine . intermediaire
 
+    TAG         décalage et aller à l'état 8
+    CLOSE       décalage et aller à l'état 18
+    TEXT        décalage et aller à l'état 19
+    EMPTY_NODE  décalage et aller à l'état 20
+    IDEN        décalage et aller à l'état 21
 
-state 16
+    arbre          aller à l'état 22
+    intermediaire  aller à l'état 23
+    texte          aller à l'état 24
+    balise         aller à l'état 12
 
-    4 chaine: chaine intermediaire .
 
-    $default  reduce using rule 4 (chaine)
+État 16
 
+   16 suite_cle_valeur: KEY VALUE .
 
-state 17
+    $défaut  réduction par utilisation de la règle 16 (suite_cle_valeur)
 
-    7 intermediaire: texte .
 
-    $default  reduce using rule 7 (intermediaire)
+État 17
 
+   15 suite_cle_valeur: suite_cle_valeur KEY . VALUE
 
-state 18
+    VALUE  décalage et aller à l'état 25
 
-   12 suite_cle_valeur: suite_cle_valeur KEY VALUE .
 
-    $default  reduce using rule 12 (suite_cle_valeur)
+État 18
+
+    5 arbre: balise chaine CLOSE .
+
+    $défaut  réduction par utilisation de la règle 5 (arbre)
+
+
+État 19
+
+   12 texte: TEXT .
+
+    $défaut  réduction par utilisation de la règle 12 (texte)
+
+
+État 20
+
+    8 intermediaire: EMPTY_NODE .
+
+    $défaut  réduction par utilisation de la règle 8 (intermediaire)
+
+
+État 21
+
+   11 intermediaire: IDEN .
+
+    $défaut  réduction par utilisation de la règle 11 (intermediaire)
+
+
+État 22
+
+   10 intermediaire: arbre .
+
+    $défaut  réduction par utilisation de la règle 10 (intermediaire)
+
+
+État 23
+
+    6 chaine: chaine intermediaire .
+
+    $défaut  réduction par utilisation de la règle 6 (chaine)
+
+
+État 24
+
+    9 intermediaire: texte .
+
+    $défaut  réduction par utilisation de la règle 9 (intermediaire)
+
+
+État 25
+
+   15 suite_cle_valeur: suite_cle_valeur KEY VALUE .
+
+    $défaut  réduction par utilisation de la règle 15 (suite_cle_valeur)
