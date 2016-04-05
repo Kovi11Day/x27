@@ -1,21 +1,19 @@
 
 /////////////////////////////////////gestion de variables
 variable_storage.h
-enum var_type {tree, number, forest};
+enum var_type {tree, arith_tree, forest};
 
 struct variable{
-var_type var_type;
+var_type type;
 char* iden;
-tree* tree;
-double value;
+Expression e;
 forest* forest; //eventuellement (ignore for now)
 };
 
-create_tree_var(iden, tree);
-create_value_var(iden, value);
-
+create_var(iden, Expression);
 destroy
-
+//modify_var(variable, Expression nw_val)
+getval(iden)
 
 struct storage_var{
 	liste de variables
@@ -24,17 +22,16 @@ struct storage_var{
 create
 destroy
 
-//essayer d'avoir deux fonctions meme nom mais differents parametres
-
+//essayer d'avoir deux fonctions meme nom mais differents parametress
+struct storage{
+	}
 add_var_to_storage(storage, iden, Expression expr){
 	if (expr->type == tree)
 		add_var_tree_to_storage (storage, iden, expr->tree);
 	else ...
 }
-	
-add_var_tree_to_storage(storage, iden, tree)
-add_var_val_to_storage(storage, iden, val)
-get_var_content
+Expression/NULL find_var_in_storage(char* iden)
+
 
 struct stack_storage_var
 
