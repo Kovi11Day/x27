@@ -19,9 +19,13 @@ rec {return REC;}
 
 identificateur {return IDEN;}
 
+
+
 key {return KEY;}
 
 value {return VALUE;}
+
+"<br/>" {return EMPTY_NODE;}
 
 [[:alpha:]]+ {
   return TAG;

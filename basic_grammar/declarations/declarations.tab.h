@@ -44,10 +44,11 @@
      TAG = 260,
      CLOSE = 261,
      TEXT = 262,
-     ARITH_EXPR = 263,
-     LET = 264,
-     IDEN = 265,
-     REC = 266
+     EMPTY_NODE = 263,
+     ARITH_EXPR = 264,
+     LET = 265,
+     IDEN = 266,
+     REC = 267
    };
 #endif
 /* Tokens.  */
@@ -56,10 +57,11 @@
 #define TAG 260
 #define CLOSE 261
 #define TEXT 262
-#define ARITH_EXPR 263
-#define LET 264
-#define IDEN 265
-#define REC 266
+#define EMPTY_NODE 263
+#define ARITH_EXPR 264
+#define LET 265
+#define IDEN 266
+#define REC 267
 
 
 

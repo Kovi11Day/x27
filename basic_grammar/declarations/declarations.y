@@ -7,8 +7,9 @@
   void yyerror(char*);
 
 %}
-//grammaire pour construire arbre + attributs
-%token KEY VALUE TAG CLOSE TEXT
+//grammaire pour construire arbre + attributs + empty nodes
+
+%token KEY VALUE TAG CLOSE TEXT EMPTY_NODE
 %token ARITH_EXPR
 %token LET IDEN REC
 %%
@@ -25,11 +26,13 @@ expression: arbre
 //arbre
 arbre: balise chaine CLOSE
 
-chaine: chaine arbre
-|chaine texte
+chaine: chaine intermediaire
+|
+;
+
+intermediaire: EMPTY_NODE
 |texte
 |arbre
-;
 
 texte: TEXT
 

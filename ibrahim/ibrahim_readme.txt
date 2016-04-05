@@ -9,6 +9,8 @@ create_empty_tree(char* label); //nullary = 1
 
 create_tree_with_attributes (char* label, attribute att);
 
-///////////////evaluer tree/////////////////////
+///////////////fonction manip tree/////////////////////
 
-enum type
+void replace_var_in_tree(tree main_tree, char* iden, tree replacement_tree);
+
+

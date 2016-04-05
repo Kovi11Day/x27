@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1> Rapport Analyse Syntaxique </h1>
+
+    <h2> Introduction </h2>
+
+    <p> sample report in html. </p>
+
+    <h2> Choix </h2>
+
+    <p>
+      1. mysyntax to tree then from tree to html <br/>
+      or <br/>
+      mysyntax to tree with actions to transform to html? <br/>
+      2. structure pour stocker forets: struct foret ou listes (sequences d'arbres)
+      manipulable par la grammaire?? <br/>
+      3. stocker quoi comme "label" des noeuds de l'arbre, du html ou mySyntax ou juste des mots clefs? <br/>
+      4. ajouter a structure tree les champs: tree last (last sibling --complexite) <br/>
+      bool text_node (if a node is the parent of a 'blabla' node) <br/>
+      5. supprimer tout les noeuds de type text et ajouter un "type text" au noeud? espace mem v/s verification du type de noeud 
+	<br/>
+	6. merge nodes of type word with those written as text? or add a type text? <br/>
+	7.garder noeud text car noeud de type word n'a aucun fils ajouter type text <br/>
+	8. comment stocker les arbres?? comme les variables?? <br/>
+	9. lors de la declaration de variables et evaluation des garbres construites differenceier entre tree et 
+		exp_arith ou utiliser directement EXP??? le non-terminal "expression" sera de type expr avec 3
+		champs: exp_type tree et expr_arith <br/>
+	10. on garde les arbres a bcp de fils ou on introduit les arbre binaires (pour les gtrees par expl)?<br/>
+	11. prog extensible, dans les exemples une seule variable locale utiliser pour une expression arbre, 
+		on met in place une structure qui permettra de modifier la syntaxe du programme pour inclure plusieurs 
+		variables dans une expression tree, il faudra seulement modifier la grammaire sans pour autant modifer
+		les strucutres---voir evaluer_garbre avec noeud de type var_local<br/>
+    </p>
+
+    <h2> Problemes </h2>
+    1. git merge <br/>
+    2. isoler les taches afin qu'on puisse travailler en parallel
+  </body>
+</html>
