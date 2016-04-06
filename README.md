@@ -2,6 +2,10 @@
 
 >>git pull
 
+faites vos modifs
+
+>>git pull
+
 >>git add NOM_DE_VOTRE_DOSSIER             
 
 >>git commit -m "inndiquer ce que vous avez modifier"
