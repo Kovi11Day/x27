@@ -1,7 +1,9 @@
 # x27
 
->>git add NOM_DE_VOTRE_DOSSIER                      
+>>git add NOM_DE_VOTRE_DOSSIER             
+
 >>git commit -m "inndiquer ce que vous avez modifier"
+
 >>git push
 
 
