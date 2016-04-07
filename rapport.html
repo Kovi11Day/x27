@@ -11,6 +11,21 @@
     	<h3>grammaire pour GTREE</h3>
     </p>
     
+    <h2> Choix de syntaxe </h2>
+    <p>
+    	1. est ce que x=y=z=q=EXP est accepté dans le langage? oui on peut gagner du temps en initialisant 
+		les variables ayant la meme valeur en une seule fois.<br/>
+		<h3> variables locales </h3>
+		<p>
+			on permet des let imbriquer
+			on permet des where imbriquer
+			on permet des let suivi par des where
+			on NE PERMET PAS des where suivi par des let car cela ne n'est pas naturel et ne semble pas
+			logique
+			
+		</p>
+    </p>
+    
     <h2> Bref explication des structures mise en place </h2>
 	
     <p> sample report in html. </p>
@@ -39,8 +54,7 @@
 		on met in place une structure qui permettra de modifier la syntaxe du programme pour inclure plusieurs 
 		variables dans une expression tree, il faudra seulement modifier la grammaire sans pour autant modifer
 		les strucutres---voir evaluer_garbre avec noeud de type var_local<br/>
-	12. est ce que x=y=z=q=EXP est accepté dans le langage? oui on peut gagner du temps en initialisant 
-		les variables ayant la meme valeur en une seule fois.<br/>
+	
 	13. Est-il vraiment nécessaire de créer un noeud LET dans le garbre??
     </p>
 

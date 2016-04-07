@@ -81,6 +81,13 @@ create_gnode_loc_var(gtree affec, gtree exp)
 /////////////NOUVELLE DECOUVERTE//////////////////
 tout les arbres utilisent la meme structure: daughters, right ...
 
+donc
+
+struct storage{
+	tree exp
+	type var_type
+	next*
+	}			
 struct exp
 	enum type = {expr_arith, tree, gtree_exp(vraiment necessaire??)}
 	tree data
