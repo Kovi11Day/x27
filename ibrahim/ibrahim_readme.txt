@@ -13,4 +13,6 @@ create_tree_with_attributes (char* label, attribute att);
 
 void replace_var_in_tree(tree main_tree, char* iden, tree replacement_tree);
 
+evaluer_noeud_var_loc; //create_local_storage
+
 

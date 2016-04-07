@@ -31,10 +31,17 @@ add_var_to_storage(storage, iden, Expression expr){
 	else ...
 }
 Expression/NULL find_var_in_storage(char* iden)
+//////////////////////////Stack_storage
 
+struct stack_var_storage
 
-struct stack_storage_var
+create_local_storage() == push == push_new_str_context
+disguard_local_storage() == pop == pop_cur_str_context
 
+get_var(iden) // cherche la iden en commencant du niveau le plus haut
+//si iden d'existe pas dans le plus haut niveau, il cherche dans le niveau en dessous etc...
+
+add_var(iden, exp)
 ///////////////////////////Expression
 struct Expression{
 	enum type {tree, arith}
@@ -69,5 +76,11 @@ case gtree_type == var_local{
 evaluer(fd)
 replace_var_in_tree (cur_node->fg->arbre_html, get_)
 
-
+create_gnode_loc_var(gtree affec, gtree exp)
 	
+/////////////NOUVELLE DECOUVERTE//////////////////
+tout les arbres utilisent la meme structure: daughters, right ...
+
+struct exp
+	enum type = {expr_arith, tree, gtree_exp(vraiment necessaire??)}
+	tree data

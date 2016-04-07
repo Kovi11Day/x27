@@ -1,286 +1,369 @@
-Terminaux inutilisés dans la grammaire
+Terminals which are not used
 
    REC
+   WHERE
 
 
-Grammaire
+Grammar
 
-    0 $accept: declaration $end
+    0 $accept: g_arbre_exp $end
 
-    1 declaration: LET affectation ';'
+    1 g_arbre_exp: var_local_in
 
-    2 affectation: IDEN '=' expression
+    2 var_local_in: declaration_var_local IN g_arbre_exp
+    3             | declaration_var_local IN expression
 
-    3 expression: arbre
-    4           | ARITH_EXPR
+    4 declaration_var_local: LET affectation
 
-    5 arbre: balise chaine CLOSE
+    5 affectation: IDEN '=' affectation
+    6            | expression
+    7            | g_arbre_exp
 
-    6 chaine: chaine intermediaire
-    7       | %empty
+    8 expression: arbre
+    9           | ARITH_EXPR
 
-    8 intermediaire: EMPTY_NODE
-    9              | texte
-   10              | arbre
-   11              | IDEN
+   10 arbre: balise chaine CLOSE
 
-   12 texte: TEXT
+   11 chaine: chaine intermediaire
+   12       | /* empty */
 
-   13 balise: TAG
-   14       | TAG suite_cle_valeur
+   13 intermediaire: EMPTY_NODE
+   14              | texte
+   15              | arbre
+   16              | IDEN
 
-   15 suite_cle_valeur: suite_cle_valeur KEY VALUE
-   16                 | KEY VALUE
+   17 texte: TEXT
+
+   18 balise: TAG
+   19       | TAG suite_cle_valeur
+
+   20 suite_cle_valeur: suite_cle_valeur KEY VALUE
+   21                 | KEY VALUE
 
 
-Terminaux, suivis des règles où ils apparaissent
+Terminals, with rules where they appear
 
 $end (0) 0
-';' (59) 1
-'=' (61) 2
+'=' (61) 5
 error (256)
-KEY (258) 15 16
-VALUE (259) 15 16
-TAG (260) 13 14
-CLOSE (261) 5
-TEXT (262) 12
-EMPTY_NODE (263) 8
-ARITH_EXPR (264) 4
-LET (265) 1
-IDEN (266) 2 11
+KEY (258) 20 21
+VALUE (259) 20 21
+TAG (260) 18 19
+CLOSE (261) 10
+TEXT (262) 17
+EMPTY_NODE (263) 13
+ARITH_EXPR (264) 9
+LET (265) 4
+IDEN (266) 5 16
 REC (267)
+IN (268) 2 3
+WHERE (269)
 
 
-Non-terminaux, suivis des règles où ils apparaissent
+Nonterminals, with rules where they appear
 
-$accept (15)
-    à gauche: 0
-declaration (16)
-    à gauche: 1, à droite: 0
-affectation (17)
-    à gauche: 2, à droite: 1
-expression (18)
-    à gauche: 3 4, à droite: 2
-arbre (19)
-    à gauche: 5, à droite: 3 10
-chaine (20)
-    à gauche: 6 7, à droite: 5 6
-intermediaire (21)
-    à gauche: 8 9 10 11, à droite: 6
-texte (22)
-    à gauche: 12, à droite: 9
-balise (23)
-    à gauche: 13 14, à droite: 5
-suite_cle_valeur (24)
-    à gauche: 15 16, à droite: 14 15
+$accept (16)
+    on left: 0
+g_arbre_exp (17)
+    on left: 1, on right: 0 2 7
+var_local_in (18)
+    on left: 2 3, on right: 1
+declaration_var_local (19)
+    on left: 4, on right: 2 3
+affectation (20)
+    on left: 5 6 7, on right: 4 5
+expression (21)
+    on left: 8 9, on right: 3 6
+arbre (22)
+    on left: 10, on right: 8 15
+chaine (23)
+    on left: 11 12, on right: 10 11
+intermediaire (24)
+    on left: 13 14 15 16, on right: 11
+texte (25)
+    on left: 17, on right: 14
+balise (26)
+    on left: 18 19, on right: 10
+suite_cle_valeur (27)
+    on left: 20 21, on right: 19 20
 
 
-État 0
+state 0
 
-    0 $accept: . declaration $end
+    0 $accept: . g_arbre_exp $end
 
-    LET  décalage et aller à l'état 1
+    LET  shift, and go to state 1
 
-    declaration  aller à l'état 2
+    g_arbre_exp            go to state 2
+    var_local_in           go to state 3
+    declaration_var_local  go to state 4
 
 
-État 1
+state 1
 
-    1 declaration: LET . affectation ';'
+    4 declaration_var_local: LET . affectation
 
-    IDEN  décalage et aller à l'état 3
+    TAG         shift, and go to state 5
+    ARITH_EXPR  shift, and go to state 6
+    LET         shift, and go to state 1
+    IDEN        shift, and go to state 7
 
-    affectation  aller à l'état 4
+    g_arbre_exp            go to state 8
+    var_local_in           go to state 3
+    declaration_var_local  go to state 4
+    affectation            go to state 9
+    expression             go to state 10
+    arbre                  go to state 11
+    balise                 go to state 12
 
 
-État 2
+state 2
 
-    0 $accept: declaration . $end
+    0 $accept: g_arbre_exp . $end
 
-    $end  décalage et aller à l'état 5
+    $end  shift, and go to state 13
 
 
-État 3
+state 3
 
-    2 affectation: IDEN . '=' expression
+    1 g_arbre_exp: var_local_in .
 
-    '='  décalage et aller à l'état 6
+    $default  reduce using rule 1 (g_arbre_exp)
 
 
-État 4
+state 4
 
-    1 declaration: LET affectation . ';'
+    2 var_local_in: declaration_var_local . IN g_arbre_exp
+    3             | declaration_var_local . IN expression
 
-    ';'  décalage et aller à l'état 7
+    IN  shift, and go to state 14
 
 
-État 5
+state 5
 
-    0 $accept: declaration $end .
+   18 balise: TAG .
+   19       | TAG . suite_cle_valeur
 
-    $défaut  accepter
+    KEY  shift, and go to state 15
 
+    $default  reduce using rule 18 (balise)
 
-État 6
+    suite_cle_valeur  go to state 16
 
-    2 affectation: IDEN '=' . expression
 
-    TAG         décalage et aller à l'état 8
-    ARITH_EXPR  décalage et aller à l'état 9
+state 6
 
-    expression  aller à l'état 10
-    arbre       aller à l'état 11
-    balise      aller à l'état 12
+    9 expression: ARITH_EXPR .
 
+    $default  reduce using rule 9 (expression)
 
-État 7
 
-    1 declaration: LET affectation ';' .
+state 7
 
-    $défaut  réduction par utilisation de la règle 1 (declaration)
+    5 affectation: IDEN . '=' affectation
 
+    '='  shift, and go to state 17
 
-État 8
 
-   13 balise: TAG .
-   14       | TAG . suite_cle_valeur
+state 8
 
-    KEY  décalage et aller à l'état 13
+    7 affectation: g_arbre_exp .
 
-    $défaut  réduction par utilisation de la règle 13 (balise)
+    $default  reduce using rule 7 (affectation)
 
-    suite_cle_valeur  aller à l'état 14
 
+state 9
 
-État 9
+    4 declaration_var_local: LET affectation .
 
-    4 expression: ARITH_EXPR .
+    $default  reduce using rule 4 (declaration_var_local)
 
-    $défaut  réduction par utilisation de la règle 4 (expression)
 
+state 10
 
-État 10
+    6 affectation: expression .
 
-    2 affectation: IDEN '=' expression .
+    $default  reduce using rule 6 (affectation)
 
-    $défaut  réduction par utilisation de la règle 2 (affectation)
 
+state 11
 
-État 11
+    8 expression: arbre .
 
-    3 expression: arbre .
+    $default  reduce using rule 8 (expression)
 
-    $défaut  réduction par utilisation de la règle 3 (expression)
 
+state 12
 
-État 12
+   10 arbre: balise . chaine CLOSE
 
-    5 arbre: balise . chaine CLOSE
+    $default  reduce using rule 12 (chaine)
 
-    $défaut  réduction par utilisation de la règle 7 (chaine)
+    chaine  go to state 18
 
-    chaine  aller à l'état 15
 
+state 13
 
-État 13
+    0 $accept: g_arbre_exp $end .
 
-   16 suite_cle_valeur: KEY . VALUE
+    $default  accept
 
-    VALUE  décalage et aller à l'état 16
 
+state 14
 
-État 14
+    2 var_local_in: declaration_var_local IN . g_arbre_exp
+    3             | declaration_var_local IN . expression
 
-   14 balise: TAG suite_cle_valeur .
-   15 suite_cle_valeur: suite_cle_valeur . KEY VALUE
+    TAG         shift, and go to state 5
+    ARITH_EXPR  shift, and go to state 6
+    LET         shift, and go to state 1
 
-    KEY  décalage et aller à l'état 17
+    g_arbre_exp            go to state 19
+    var_local_in           go to state 3
+    declaration_var_local  go to state 4
+    expression             go to state 20
+    arbre                  go to state 11
+    balise                 go to state 12
 
-    $défaut  réduction par utilisation de la règle 14 (balise)
 
+state 15
 
-État 15
+   21 suite_cle_valeur: KEY . VALUE
 
-    5 arbre: balise chaine . CLOSE
-    6 chaine: chaine . intermediaire
+    VALUE  shift, and go to state 21
 
-    TAG         décalage et aller à l'état 8
-    CLOSE       décalage et aller à l'état 18
-    TEXT        décalage et aller à l'état 19
-    EMPTY_NODE  décalage et aller à l'état 20
-    IDEN        décalage et aller à l'état 21
 
-    arbre          aller à l'état 22
-    intermediaire  aller à l'état 23
-    texte          aller à l'état 24
-    balise         aller à l'état 12
+state 16
 
+   19 balise: TAG suite_cle_valeur .
+   20 suite_cle_valeur: suite_cle_valeur . KEY VALUE
 
-État 16
+    KEY  shift, and go to state 22
 
-   16 suite_cle_valeur: KEY VALUE .
+    $default  reduce using rule 19 (balise)
 
-    $défaut  réduction par utilisation de la règle 16 (suite_cle_valeur)
 
+state 17
 
-État 17
+    5 affectation: IDEN '=' . affectation
 
-   15 suite_cle_valeur: suite_cle_valeur KEY . VALUE
+    TAG         shift, and go to state 5
+    ARITH_EXPR  shift, and go to state 6
+    LET         shift, and go to state 1
+    IDEN        shift, and go to state 7
 
-    VALUE  décalage et aller à l'état 25
+    g_arbre_exp            go to state 8
+    var_local_in           go to state 3
+    declaration_var_local  go to state 4
+    affectation            go to state 23
+    expression             go to state 10
+    arbre                  go to state 11
+    balise                 go to state 12
 
 
-État 18
+state 18
 
-    5 arbre: balise chaine CLOSE .
+   10 arbre: balise chaine . CLOSE
+   11 chaine: chaine . intermediaire
 
-    $défaut  réduction par utilisation de la règle 5 (arbre)
+    TAG         shift, and go to state 5
+    CLOSE       shift, and go to state 24
+    TEXT        shift, and go to state 25
+    EMPTY_NODE  shift, and go to state 26
+    IDEN        shift, and go to state 27
 
+    arbre          go to state 28
+    intermediaire  go to state 29
+    texte          go to state 30
+    balise         go to state 12
 
-État 19
 
-   12 texte: TEXT .
+state 19
 
-    $défaut  réduction par utilisation de la règle 12 (texte)
+    2 var_local_in: declaration_var_local IN g_arbre_exp .
 
+    $default  reduce using rule 2 (var_local_in)
 
-État 20
 
-    8 intermediaire: EMPTY_NODE .
+state 20
 
-    $défaut  réduction par utilisation de la règle 8 (intermediaire)
+    3 var_local_in: declaration_var_local IN expression .
 
+    $default  reduce using rule 3 (var_local_in)
 
-État 21
 
-   11 intermediaire: IDEN .
+state 21
 
-    $défaut  réduction par utilisation de la règle 11 (intermediaire)
+   21 suite_cle_valeur: KEY VALUE .
 
+    $default  reduce using rule 21 (suite_cle_valeur)
 
-État 22
 
-   10 intermediaire: arbre .
+state 22
 
-    $défaut  réduction par utilisation de la règle 10 (intermediaire)
+   20 suite_cle_valeur: suite_cle_valeur KEY . VALUE
 
+    VALUE  shift, and go to state 31
 
-État 23
 
-    6 chaine: chaine intermediaire .
+state 23
 
-    $défaut  réduction par utilisation de la règle 6 (chaine)
+    5 affectation: IDEN '=' affectation .
 
+    $default  reduce using rule 5 (affectation)
 
-État 24
 
-    9 intermediaire: texte .
+state 24
 
-    $défaut  réduction par utilisation de la règle 9 (intermediaire)
+   10 arbre: balise chaine CLOSE .
 
+    $default  reduce using rule 10 (arbre)
 
-État 25
 
-   15 suite_cle_valeur: suite_cle_valeur KEY VALUE .
+state 25
 
-    $défaut  réduction par utilisation de la règle 15 (suite_cle_valeur)
+   17 texte: TEXT .
+
+    $default  reduce using rule 17 (texte)
+
+
+state 26
+
+   13 intermediaire: EMPTY_NODE .
+
+    $default  reduce using rule 13 (intermediaire)
+
+
+state 27
+
+   16 intermediaire: IDEN .
+
+    $default  reduce using rule 16 (intermediaire)
+
+
+state 28
+
+   15 intermediaire: arbre .
+
+    $default  reduce using rule 15 (intermediaire)
+
+
+state 29
+
+   11 chaine: chaine intermediaire .
+
+    $default  reduce using rule 11 (chaine)
+
+
+state 30
+
+   14 intermediaire: texte .
+
+    $default  reduce using rule 14 (intermediaire)
+
+
+state 31
+
+   20 suite_cle_valeur: suite_cle_valeur KEY VALUE .
+
+    $default  reduce using rule 20 (suite_cle_valeur)

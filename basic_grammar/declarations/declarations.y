@@ -7,31 +7,37 @@
   void yyerror(char*);
 
 %}
+//grammaire present SANS CONFLITS
 //grammaire pour construire arbre + attributs + empty nodes + var
-
+//grammaire pour dec, var_locales 
 %token KEY VALUE TAG CLOSE TEXT EMPTY_NODE
 %token ARITH_EXPR
 %token LET IDEN REC IN WHERE
 %%
 
 
- //declarations
-declaration_var: LET affectation ';' //???
+////////////////////////////VARIABLES_LOCALES////////////////////////////////////////
+g_arbre_exp: var_local_in
 
+var_local_in: declaration_var_local IN g_arbre_exp
+|declaration_var_local IN expression
 
- //variables locales
+declaration_var_local: LET affectation
+/////////////////////////DECLARATION_VARIABLES///////////////////////////////////////
 
+ //declaration_var: LET affectation ';'
 
-
-affectation: IDEN '=' expression //<expression>$$ = $1; add_var_in_storage(s,$1,$3);
-
+affectation: IDEN '=' affectation
+|expression//<expression>$$ = $1; add_var_in_storage(s,$1,$3);
+|g_arbre_exp
+;
  //expression---ajouter parantheses
 
 expression: arbre//$$=creeer_expr_tree();
 | ARITH_EXPR //<Expression>$$=creer_expression_arith();
 ;
 
-//arbre
+/////////////////////////////ARBRE///////////////////////////////////////////////////
 arbre: balise chaine CLOSE //join_parent_daughters
 
 chaine: chaine intermediaire //add_sibling
