@@ -500,12 +500,12 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "declarations.l"
-#line 2 "declarations.l"
+#line 1 "add_arith.l"
+#line 2 "add_arith.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "declarations.tab.h"
+#include "add_arith.tab.h"
   int fileno(FILE*);
 
 #define YY_NO_INPUT 1
@@ -726,7 +726,7 @@ YY_DECL
 		}
 
 	{
-#line 12 "declarations.l"
+#line 12 "add_arith.l"
 
 
 #line 733 "lex.yy.c"
@@ -788,77 +788,77 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "declarations.l"
+#line 14 "add_arith.l"
 {return *yytext;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "declarations.l"
+#line 16 "add_arith.l"
 {return IN;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "declarations.l"
+#line 18 "add_arith.l"
 {return WHERE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 20 "declarations.l"
+#line 20 "add_arith.l"
 {return ARITH_EXPR;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 22 "declarations.l"
+#line 22 "add_arith.l"
 {return LET;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 24 "declarations.l"
+#line 24 "add_arith.l"
 {return REC;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 26 "declarations.l"
+#line 26 "add_arith.l"
 {return KEY;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 28 "declarations.l"
+#line 28 "add_arith.l"
 {return VALUE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 30 "declarations.l"
+#line 30 "add_arith.l"
 {return EMPTY_NODE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 32 "declarations.l"
+#line 32 "add_arith.l"
 {return IDEN;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 33 "declarations.l"
+#line 33 "add_arith.l"
 {return TAG;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 35 "declarations.l"
+#line 35 "add_arith.l"
 {return CLOSE;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 37 "declarations.l"
+#line 37 "add_arith.l"
 {BEGIN TEXT_MODE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 39 "declarations.l"
+#line 39 "add_arith.l"
 {BEGIN INITIAL;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 41 "declarations.l"
+#line 41 "add_arith.l"
 {
   return TEXT;
  }
@@ -866,12 +866,12 @@ YY_RULE_SETUP
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 45 "declarations.l"
+#line 45 "add_arith.l"
 {}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 47 "declarations.l"
+#line 47 "add_arith.l"
 ECHO;
 	YY_BREAK
 #line 878 "lex.yy.c"
@@ -1839,4 +1839,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 47 "declarations.l"
+#line 47 "add_arith.l"

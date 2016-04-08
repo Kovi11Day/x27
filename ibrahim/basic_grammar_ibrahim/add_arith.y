@@ -11,48 +11,18 @@
 //grammaire pour construire arbre + attributs + empty nodes + var
 //grammaire pour dec, var_locales 
 %token KEY VALUE TAG CLOSE TEXT EMPTY_NODE
-%token ARITH_EXPR
+%token NUM
 %token LET IDEN REC IN WHERE
 %%
 
-doc: declaration_var
-|var_loc_in
-|var_loc_where
-;
-////////////////////////////VARIABLES_LOCALES////////////////////////////////////////
- /*
-g_arbre_exp: var_local_in
 
-var_local_in: declaration_var_local IN g_arbre_exp
-|declaration_var_local IN expression
 
-declaration_var_local_IN: LET affectation
- */
-var_loc_in: LET affectation IN var_loc_in
-| LET affectation IN expression
-
-var_loc_where: var_loc_where WHERE affectation
-|expression WHERE affectation
-;	   
-/////////////////////////DECLARATION_VARIABLES///////////////////////////////////////
-
-declaration_var: LET affectation ';'
-
-affectation: IDEN '=' affectation
-|expression//<expression>$$ = $1; add_var_in_storage(s,$1,$3);
-|doc
-;
- //expression---ajouter parantheses
-
-expression: foret//$$=creeer_expr_tree();
+expression: arbre//$$=creeer_expr_tree();
 | ARITH_EXPR //<Expression>$$=creer_expression_arith();
 ;
+/////////////////////////////ARBRE///////////////////////////////////////////////////
 
-///////////////////////////////FORET///////////////////////////////////////////////////
-foret: foret arbre
-|arbre
-|texte
-;
+
 /////////////////////////////ARBRE///////////////////////////////////////////////////
 arbre: balise chaine CLOSE //join_parent_daughters
 

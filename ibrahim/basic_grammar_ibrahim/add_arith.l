@@ -1,0 +1,46 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "add_arith.tab.h"
+  int fileno(FILE*);
+%}
+
+%x TEXT_MODE
+%option noinput nounput
+
+%%
+
+[=;] {return *yytext;}
+
+in {return IN;}
+
+where {return WHERE;}
+
+arith {return ARITH_EXPR;}
+
+let {return LET;}
+
+rec {return REC;}
+
+key {return KEY;}
+
+value {return VALUE;}
+
+"<br/>" {return EMPTY_NODE;}
+
+[[:alpha:]]+ {return IDEN;}
+[[:alpha:]]+"{" {return TAG;}
+
+"}" {return CLOSE;}
+
+\" {BEGIN TEXT_MODE;}
+
+<TEXT_MODE>\" {BEGIN INITIAL;}
+
+<TEXT_MODE>[[:alpha:]]+ {
+  return TEXT;
+ }
+
+.|\n {}
+
