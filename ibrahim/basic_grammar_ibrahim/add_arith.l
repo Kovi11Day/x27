@@ -4,20 +4,27 @@
 #include <string.h>
 #include "add_arith.tab.h"
   int fileno(FILE*);
+  
 %}
-
 %x TEXT_MODE
 %option noinput nounput
 
 %%
+[[:digit:]]+					|
+[[:digit:]]*"."[[:digit:]]+ 	|
+[[:digit:]]+"."[[:digit:]]* 	{
+	yylval.real = atof(yytext);
+	return NUM;
+	}
 
-[=;] {return *yytext;}
+
+"**"			return(PUIS);
+[+\-*/%()=;] {return *yytext;}
 
 in {return IN;}
 
 where {return WHERE;}
 
-arith {return ARITH_EXPR;}
 
 let {return LET;}
 
