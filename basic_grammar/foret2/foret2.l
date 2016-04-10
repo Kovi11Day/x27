@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "declarations.tab.h"
+#include "foret2.tab.h"
   int fileno(FILE*);
 %}
 
@@ -11,15 +11,17 @@
 
 %%
 
+[=;] {return *yytext;}
+
+in {return IN;}
+
+where {return WHERE;}
+
 arith {return ARITH_EXPR;}
 
 let {return LET;}
 
 rec {return REC;}
-
-identificateur {return IDEN;}
-
-
 
 key {return KEY;}
 
@@ -27,9 +29,8 @@ value {return VALUE;}
 
 "<br/>" {return EMPTY_NODE;}
 
-[[:alpha:]]+ {
-  return TAG;
-}
+[[:alpha:]]+ {return IDEN;}
+[[:alpha:]]+"{" {return TAG;}
 
 "}" {return CLOSE;}
 
