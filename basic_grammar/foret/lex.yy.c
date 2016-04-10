@@ -485,12 +485,12 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "declarations.l"
-#line 2 "declarations.l"
+#line 1 "foret.l"
+#line 2 "foret.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "declarations.tab.h"
+#include "foret.tab.h"
   int fileno(FILE*);
 
 #define YY_NO_INPUT 1
@@ -675,7 +675,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 12 "declarations.l"
+#line 12 "foret.l"
 
 
 #line 682 "lex.yy.c"
@@ -763,82 +763,82 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "declarations.l"
+#line 14 "foret.l"
 {return *yytext;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "declarations.l"
+#line 16 "foret.l"
 {return IN;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "declarations.l"
+#line 18 "foret.l"
 {return WHERE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 20 "declarations.l"
+#line 20 "foret.l"
 {return ARITH_EXPR;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 22 "declarations.l"
+#line 22 "foret.l"
 {return LET;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 24 "declarations.l"
+#line 24 "foret.l"
 {return REC;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 26 "declarations.l"
+#line 26 "foret.l"
 {return KEY;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 28 "declarations.l"
+#line 28 "foret.l"
 {return VALUE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 30 "declarations.l"
+#line 30 "foret.l"
 {return EMPTY_NODE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 32 "declarations.l"
+#line 32 "foret.l"
 {return IDEN;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 33 "declarations.l"
+#line 33 "foret.l"
 {return TAG;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 35 "declarations.l"
+#line 35 "foret.l"
 {return OPEN;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 37 "declarations.l"
+#line 37 "foret.l"
 {return CLOSE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 39 "declarations.l"
+#line 39 "foret.l"
 {BEGIN TEXT_MODE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 41 "declarations.l"
+#line 41 "foret.l"
 {BEGIN INITIAL;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 43 "declarations.l"
+#line 43 "foret.l"
 {
   return TEXT;
  }
@@ -846,12 +846,12 @@ YY_RULE_SETUP
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 47 "declarations.l"
+#line 47 "foret.l"
 {}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 49 "declarations.l"
+#line 49 "foret.l"
 ECHO;
 	YY_BREAK
 #line 858 "lex.yy.c"
@@ -1815,4 +1815,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 49 "declarations.l"
+#line 49 "foret.l"

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "declarations.tab.h"
+#include "foret.tab.h"
   int fileno(FILE*);
 %}
 
