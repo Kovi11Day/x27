@@ -20,29 +20,23 @@ doc: declaration_var
 |var_loc_where
 ;
 ////////////////////////////VARIABLES_LOCALES////////////////////////////////////////
- /*
-g_arbre_exp: var_local_in
-|inter
-;
-
-var_local_in: declaration_var_local IN g_arbre_exp
-|declaration_var_local IN expression
-
-declaration_var_local_IN: LET affectation
- */
-var_loc_in: LET affectation IN var_loc_in
-| LET affectation IN expression
 
 var_loc_where: var_loc_where WHERE affectation
 |expression WHERE affectation
-;	   
+|var_loc_in WHERE affectation
+;
+
+var_loc_in: LET affectation IN var_loc_in
+| LET affectation IN expression
+;
+
 /////////////////////////DECLARATION_VARIABLES///////////////////////////////////////
 
 declaration_var: LET affectation ';'
 
 affectation: IDEN '=' affectation
 |expression//<expression>$$ = $1; add_var_in_storage(s,$1,$3);
-|doc
+	     //|garbre
 ;
  //expression---ajouter parantheses
 
@@ -50,50 +44,13 @@ expression: foret//$$=creeer_expr_tree();
 | ARITH_EXPR //<Expression>$$=creer_expression_arith();
 ;
 
-<<<<<<< HEAD
-/////////////////////////////FORETS///////////////////////////////////////////////////
-/*
-foret: foret_imbriquer
-|foret_simple
-;
 
-foret_imbriquer: OPEN foret_imbriquer CLOSE
-|suite_foret
-;
-
-suite_foret: suite_foret foret
-|foret
-;
-*/
-
-
-foret: OPEN foret inter CLOSE
-|suite_arbres
-|suite_foret
-;
-
-inter: suite_arbres|suite_foret;
-
-suite_foret: suite_foret foret_simple
-|foret_simple
-;
-
-foret_simple: OPEN suite_arbres CLOSE
-| OPEN arbre CLOSE
-;
-
-suite_arbres: suite_arbres arbre
-|arbre 
-;
-///////////////////////ARBRES////////////////////////////////////////////////////
-=======
 ///////////////////////////////FORET///////////////////////////////////////////////////
 foret: foret arbre
 |arbre
 |texte
 ;
 /////////////////////////////ARBRE///////////////////////////////////////////////////
->>>>>>> 4107d397b9dac15cf8f1b503d645829a15029bc1
 arbre: balise chaine CLOSE //join_parent_daughters
 
 chaine: chaine intermediaire //add_sibling
