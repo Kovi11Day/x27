@@ -14,11 +14,12 @@
 //grammaire pour construire arbre + attributs + empty nodes + var
 //grammaire pour dec, var_locales 
 %token KEY VALUE TAG CLOSE TEXT EMPTY_NODE
-%token NUM
-%token LET IDEN REC IN WHERE
-%token <real> NUM
+%token if then else
+%token LET IDEN REC IN WHERE 
+%token <real> NUM 
+%token <real> EXPR   other
 %token PUIS
-%type <real>  arith_expr 
+%type <real>  arith_expr stmt matched unmatched  	
 %left '+''-'
 %left '*''/'
 %%
@@ -64,6 +65,26 @@ s:	s arith_expr
 |        arith_expr '%' arith_expr 		
 |        arith_expr PUIS arith_expr  	
 ;
+///////////////////////////////////IF THEN ELSE  Conditional ////////////////////////////////////////////////////////
+
+e:  e stmt
+	|
+	;
+
+stmt:
+	matched
+|	unmatched
+;
+matched: if EXPR then matched else matched           {printf("%s",$6);}
+|		 other										{$$=$1;}
+|		'('matched')'								{$$=$2;}
+;		
+unmatched: if EXPR then stmt							{printf("%s",$4);}
+|			if EXPR then matched else unmatched 		{$$=$6;}
+|			'('unmatched')'								{$$=$2;}
+;
+
+
 %%
 
 int main(void){

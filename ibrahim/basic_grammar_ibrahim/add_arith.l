@@ -19,6 +19,9 @@
 
 
 "**"			return(PUIS);
+"if"			return("if");
+"then"			return("then");
+"else"			return("else");
 [+\-*/%()=;] {return *yytext;}
 
 in {return IN;}
