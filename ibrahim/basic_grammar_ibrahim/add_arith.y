@@ -84,6 +84,19 @@ unmatched: if EXPR then stmt
 |			'('unmatched')'								
 ;
 
+//////////////////////Function/////////////////////
+
+result :			'('f argument')'
+;
+
+affect:
+					'('result other')'
+|					'('affect other')'
+|			   		final
+;
+///////////////////////////////////////////////
+
+
 
 %%
 
