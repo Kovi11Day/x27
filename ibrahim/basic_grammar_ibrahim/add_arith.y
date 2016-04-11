@@ -75,13 +75,13 @@ stmt:
 	matched
 |	unmatched
 ;
-matched: if EXPR then matched else matched           {printf("%s",$6);}
-|		 other										{$$=$1;}
-|		'('matched')'								{$$=$2;}
+matched: if EXPR then matched else matched           
+|		 other									
+|		'('matched')'								
 ;		
-unmatched: if EXPR then stmt							{printf("%s",$4);}
-|			if EXPR then matched else unmatched 		{$$=$6;}
-|			'('unmatched')'								{$$=$2;}
+unmatched: if EXPR then stmt							
+|			if EXPR then matched else unmatched 		
+|			'('unmatched')'								
 ;
 
 
