@@ -20,10 +20,6 @@
 
 [=;+*^%/\-] {return *yytext;}
 
-"if" {return IF;}
-then {return THEN;}
-condition {return CONDITION;}
-"else" {return ELSE;}
 in {return IN;}
 
 where {return WHERE;}
