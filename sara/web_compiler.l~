@@ -9,13 +9,11 @@
 %x ATTRIBUT
 %x COMMENTAIRE
 %x TEXT_MODE
-
 %option noinput nounput
 
 IDEN [A-Za-z_][A-Za-z0-9_]*
 NB ([[:digit:]]+(\.[[:digit:]]*)?)|(\.[[:digit:]]+)
-XML ^[xX]^[mM]^[lL]
-  
+XML ^[xX]^[mM]^[lL]      
 %%
 
 
