@@ -14,7 +14,7 @@
 %token <real> NBR
 %token <var> ID
 %token PUISSANCE SUM
-%type <real> e t s p
+%type <real> E T S P
 
 //grammaire present SANS CONFLITS
 //grammaire pour construire arbre + attributs + empty nodes + var
@@ -60,38 +60,38 @@ suite_cle_valeur: suite_cle_valeur KEY VALUE //<Attributs>$$=add_cle_valeur($1, 
 /////////////////////////////Expresssion Arithme///////////////////////////////////////////////////	
 	
 fin: calcule'\n' 			////{return 0;}
-calcule : calcule e ';'  	///{i++;printf("Résultat de l'opération n°%d : %f \n",i,$2);}
+calcule : calcule E ';'  	///{i++;printf("Résultat de l'opération n°%d : %f \n",i,$2);}
 |  
 ;
 
-e : e'+'t   					 ///{ $$= $1 + $3;}	
-|	 e'-'t 						////{ $$= $1 - $3;}
+E : E'+'T   					 ///{ $$= $1 + $3;}	
+| E'-'T 						////{ $$= $1 - $3;}
 
 			
-| 	t 							///{$$ = $1;}
+| T 							///{$$ = $1;}
 ;
 
-t : t'*'p 						/////{ $$= $1 * $3;}
+T : T'*'P 						/////{ $$= $1 * $3;}
 
-|	t'/'p 						////{ if($3 != 0){
+|T'/'P 						////{ if($3 != 0){
 								///$$= $1 / $3;}
 								/////else {
 								/////	printf("le dénominateur ne doit pas étre null \n");
 								/////		return 0;}
 		}		
-|	p 								/////{ $$ = $1;}
+|	P 								/////{ $$ = $1;}
 ;
 
-p: 	s PUISSANCE p 							 //////{ $$= pow($1,$3);}	
-| s 											//////{ $$ = $1;}
-| '-' p {
+P: 	S PUISSANCE P 							 //////{ $$= pow($1,$3);}	
+| S 											//////{ $$ = $1;}
+| '-' P {
 	$$ = (-$2) ;
 	fprintf(stderr, "p -> -p\n");
 	}
-|'('e')' 									///////{$$ = ($2) ;}
+|'('E')' 									///////{$$ = ($2) ;}
 ;
 
-s: NBR										//////{ $$= $1;}
+S: NBR										//////{ $$= $1;}
 ;
 
 ///////////////////////////////////IF THEN ELSE  Conditional ////////////////////////////////////////////////////////
