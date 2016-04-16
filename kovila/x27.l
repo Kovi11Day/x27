@@ -7,53 +7,74 @@
   int fileno(FILE*);
 %}
 
-%x TEXT_MODE
+%x ATTRIBUT
+%x TEXT_MODE_1
+%x TEXT_MODE_2
+
+
 %option noinput nounput
 
+IDEN [A-Za-z_][A-Za-z0-9_]*
+NB ([[:digit:]]+(\.[[:digit:]]*)?)|(\.[[:digit:]]+)
+KEY [[:alpha:]]+\=\"
+TAG ([[:alpha:]]+"{")|([[:alpha:]]+"{")
 %%
-[[:digit:]]+					|
-[[:digit:]]*"."[[:digit:]]+ 	|
-[[:digit:]]+"."[[:digit:]]* 	{
-  //yylval.real = atof(yytext);
-	return NUM;
- }
 
-[=;+*^%/\-] {return *yytext;}
 
-"if" {return IF;}
-then {return THEN;}
-condition {return CONDITION;}
-"else" {return ELSE;}
-in {return IN;}
-
-where {return WHERE;}
-
-arith {return ARITH_EXPR;}
-
-let {return LET;}
-
+fun {return FUN;}
 rec {return REC;}
+let {printf("msg from lex: LET found\n"); return LET;}
+"if" {return IF;}
+where {return WHERE;}
+in  {return IN;}
+num {return NUM;}
+then {return THEN;}
+"else" {return ELSE;}
+match {return MATCH;}
+     
 
-key {return KEY; yylval.name=strdup(yytext);}
 
-value {return VALUE; yylval.name=strdup(yytext);}
+{IDEN} {yylval.name=strdup(yytext);
+  printf("msg from lex: IDEN found\n"); 
+  return IDEN;}
 
-"<br/>" {return EMPTY_NODE;}
+{NB} {
+  yylval.value=atof(yytext);
+  return NUM;}
 
-[[:alpha:]]+ {return IDEN;}
-[[:alpha:]]+"{" {return TAG; yylval.name = strdup(yytext);}
+{TAG} {
+  printf("msg from lex: TAG found\n"); 
+  return TAG;
+}
 
-"{" {return OPEN;}
+[>=<,;] {return *yytext;}
+[+*( ) \- / \% \*\*|\^] {return *yytext;}
+     
+\" {BEGIN TEXT_MODE_1;}
 
-"}" {return CLOSE;}
+<TEXT_MODE_1>\" {BEGIN INITIAL;}
 
-\" {BEGIN TEXT_MODE;}
-
-<TEXT_MODE>\" {BEGIN INITIAL;}
-
-<TEXT_MODE>[[:alpha:]]+ {
+<TEXT_MODE_1>(.|\n)+ {
+  yylval.name = strdup(yytext);
   return TEXT;
- }
+}
 
-.|\n {}
+ <TEXT_MODE_2>\" {BEGIN ATTRIBUT;}
 
+<TEXT_MODE_2>(.|\n)+ {
+  yylval.name = strdup(yytext);
+  return VALUE;
+}
+   
+\[ {BEGIN ATTRIBUT;}
+
+<ATTRIBUT>{KEY} {
+  yylval.name = strdup(yytext);
+  return KEY;
+  BEGIN TEXT_MODE_2;
+}
+
+<ATTRIBUT>"]" {BEGIN INITIAL;}
+
+.|\n {;}
+%%
