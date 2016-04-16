@@ -14,7 +14,7 @@
 [[:digit:]]*"."[[:digit:]]+ 	|
 [[:digit:]]+"."[[:digit:]]* 	{
 	yylval.real = atof(yytext);
-	return NUM;
+	return NBR;
 	}
 
 
