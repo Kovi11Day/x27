@@ -7,26 +7,28 @@
   int fileno(FILE*);
 %}
 %x ATTRIBUT
-%x COMMENTAIRE
-%x TEXT_MODE
+%x TEXT_MODE_1
+%x TEXT_MODE_2
+
 
 %option noinput nounput
 
 IDEN [A-Za-z_][A-Za-z0-9_]*
 NB ([[:digit:]]+(\.[[:digit:]]*)?)|(\.[[:digit:]]+)
-XML ^[xX]^[mM]^[lL]
-  
+XML [xX][mM][lL]
+ //SAUF_XML  
+KEY [[:alpha:]]+\=\"
+ //TAG 
 %%
 
 
-fun  {return FUN;}
-rec  {return REC;}
-let  {return LET;}
- =   {return =;}
-if   {return IF;}
-where  {return WHERE;}
+fun {return FUN;}
+rec {return REC;}
+let {return LET;}
+if  {return IF;}
+where {return WHERE;}
 in  {return IN;}
-enum  {return ENUM;}
+num {return NUM;}
 then {return THEN;}
 else {return ELSE;}
 with {return WITH;}
@@ -34,50 +36,51 @@ match {return MATCH;}
      
 
 
-{IDEN} {return IDEN;}
+{IDEN} {yyval.name=strdup(yytext);
+  return IDEN;}
 
-{NB} {yyval.value=atof(yytext);
-        return NUM;
-        return ID;}
+{NB }{yyval.value=atof(yytext);
+return NUM;}
 
-{XML} {return XML;}
+//{XML} printf(yytext);}// {return XML;}
 
 [< > >= =< == . , ;  ] {return *yytext;}
-[+ * ( ) \- / \% \*\*|\^]{return *yytext;}
+[+ * ( ) \- / \% \*\*|\^] {return *yytext;}
      
+\" {BEGIN TEXT_MODE_1;}
 
-[[:alpha:]]+ {
+<TEXT_MODE_1>\" {BEGIN INITIAL;}
+
+<TEXT_MODE_1>(.|\n) {
   yylval.name = strdup(yytext);
-  return TAG;
-}
-"}" {return CLOSE;}
-
-\" {BEGIN TEXT_MODE;}
-
-<TEXT_MODE>\" {BEGIN INITIAL;}
-
-<TEXT_MODE>[[:alpha:]]+ {
-  yylval.name = strdup(yytext);
- return TEXT;
+  return TEXT;
  }
+{KEY} {ECHO;BEGIN TEXT_MODE_2;}
+
+ <TEXT_MODE_2>\" {ECHO;BEGIN INITIAL;}
+
+<TEXT_MODE_2>. {
+  yylval.name = strdup(yytext);
+  return VALUE;
+ }
+   
       
-<ATTRIBUT>\" {BEGIN INITIAL;}
+\[ {BEGIN <ATTRIBUT>;}
 
-<ATTRIBUT>.{IDEN} {
-   yylval.name = strdup(yytext)
-    return KEY;
+<ATTRIBUT>{KEY} {yylval.name = strdup(yytext)
+     return KEY;
+  BEGIN TEXT_MODE_2;
  }
+<ATTRIBUT>\] {BEGIN INITIAL;}
 
 
-
-<ATTRIBUT>\" {BEGIN INITIAL;}
-//<AATRIBUT>{IDEN}.{WWW.}{IDEN}{
-//yylval.name = strdup(yytext);
-<ATTRIBUT>.{IDEN} {
-    yylval.name = strdup(yytext);
-   return VALUE;
- }
-     
-
-
-.|\n {}
+{TAG}\{ {return TAG; BEGIN TEXT_MODE_1;}
+{TAG}\[ {return TAG; BEGIN ATTRIBUT;}
+{TAG}\/ {yylval.name = strdup(yytext);
+  return EMPTY_NODE;}
+\{\}  {}
+\{\{* {printf("\{");}
+\}\}* {printf("\}");}
+\}    {return CLOSE;}
+\{\"  {BEGIN TEXT_MODE_1;}
+\]\/ {return EMPTY_NODE;}
