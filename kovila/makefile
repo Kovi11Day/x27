@@ -1,7 +1,7 @@
 CC=gcc
 LEX=flex
 YACC=bison -d -v
-LDLIBS=-lfl -ly -lm
+LDLIBS=-ll -ly -lm
 CFLAGS=-std=c99 -g -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes
 
 ytab=$(name).tab.c $(name).tab.h

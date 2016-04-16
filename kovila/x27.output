@@ -1,7 +1,11 @@
-Terminaux inutilisés dans la grammaire
+Terminals which are not used
 
    OPEN
    NUM
+   IF
+   CONDITION
+   THEN
+   ELSE
    REC
    '+'
    '-'
@@ -10,10 +14,7 @@ Terminaux inutilisés dans la grammaire
    '^'
 
 
-État 45 conflits: 1 décalage/réduction
-
-
-Grammaire
+Grammar
 
     0 $accept: doc $end
 
@@ -21,674 +22,580 @@ Grammaire
     2    | var_loc_in
     3    | var_loc_where
 
-    4 expr_conditionelle: IF CONDITION THEN expr_conditionelle ELSE expr_conditionelle
-    5                   | IF CONDITION THEN expression ELSE expression
+    4 var_loc_where: var_loc_where WHERE affectation
+    5              | expression WHERE affectation
+    6              | var_loc_in WHERE affectation
 
-    6 var_loc_where: var_loc_where WHERE affectation
-    7              | expression WHERE affectation
-    8              | var_loc_in WHERE affectation
+    7 var_loc_in: LET affectation IN var_loc_in
+    8           | LET affectation IN expression
 
-    9 var_loc_in: LET affectation IN var_loc_in
-   10           | LET affectation IN expression
+    9 declaration_var: LET IDEN '=' expression ';'
 
-   11 declaration_var: LET affectation ';'
+   10 affectation: IDEN '=' affectation
+   11            | expression
 
-   12 affectation: IDEN '=' affectation
-   13            | expression
+   12 expression: foret
+   13           | ARITH_EXPR
 
-   14 expression: foret
-   15           | ARITH_EXPR
-   16           | expr_conditionelle
+   14 foret: foret arbre
+   15      | arbre
+   16      | texte
 
-   17 foret: foret arbre
-   18      | arbre
-   19      | texte
+   17 arbre: balise chaine CLOSE
 
-   20 arbre: balise chaine CLOSE
+   18 chaine: chaine intermediaire
+   19       | intermediaire
 
-   21 chaine: chaine intermediaire
-   22       | intermediaire
+   20 intermediaire: EMPTY_NODE
+   21              | texte
+   22              | arbre
+   23              | IDEN
 
-   23 intermediaire: EMPTY_NODE
-   24              | texte
-   25              | arbre
-   26              | IDEN
+   24 texte: TEXT
 
-   27 texte: TEXT
+   25 balise: TAG
+   26       | TAG suite_cle_valeur
 
-   28 balise: TAG
-   29       | TAG suite_cle_valeur
-
-   30 suite_cle_valeur: suite_cle_valeur KEY VALUE
-   31                 | KEY VALUE
+   27 suite_cle_valeur: suite_cle_valeur KEY VALUE
+   28                 | KEY VALUE
 
 
-Terminaux, suivis des règles où ils apparaissent
+Terminals, with rules where they appear
 
 $end (0) 0
 '*' (42)
 '+' (43)
 '-' (45)
 '/' (47)
-';' (59) 11
-'=' (61) 12
+';' (59) 9
+'=' (61) 9 10
 '^' (94)
 error (256)
-KEY (258) 30 31
-VALUE (259) 30 31
-TAG (260) 28 29
-TEXT (261) 27
-IDEN (262) 12 26
-EMPTY_NODE (263) 23
+KEY (258) 27 28
+VALUE (259) 27 28
+TAG (260) 25 26
+TEXT (261) 24
+IDEN (262) 9 10 23
+EMPTY_NODE (263) 20
 OPEN (264)
-CLOSE (265) 20
+CLOSE (265) 17
 NUM (266)
-IF (267) 4 5
-CONDITION (268) 4 5
-THEN (269) 4 5
-ELSE (270) 4 5
-ARITH_EXPR (271) 15
-LET (272) 9 10 11
+IF (267)
+CONDITION (268)
+THEN (269)
+ELSE (270)
+ARITH_EXPR (271) 13
+LET (272) 7 8 9
 REC (273)
-IN (274) 9 10
-WHERE (275) 6 7 8
+IN (274) 7 8
+WHERE (275) 4 5 6
 
 
-Non-terminaux, suivis des règles où ils apparaissent
+Nonterminals, with rules where they appear
 
 $accept (28)
-    à gauche: 0
+    on left: 0
 doc (29)
-    à gauche: 1 2 3, à droite: 0
-expr_conditionelle (30)
-    à gauche: 4 5, à droite: 4 16
-var_loc_where (31)
-    à gauche: 6 7 8, à droite: 3 6
-var_loc_in (32)
-    à gauche: 9 10, à droite: 2 8 9
-declaration_var (33)
-    à gauche: 11, à droite: 1
-affectation (34)
-    à gauche: 12 13, à droite: 6 7 8 9 10 11 12
-expression (35)
-    à gauche: 14 15 16, à droite: 5 7 10 13
-foret (36)
-    à gauche: 17 18 19, à droite: 14 17
-arbre (37)
-    à gauche: 20, à droite: 17 18 25
-chaine (38)
-    à gauche: 21 22, à droite: 20 21
-intermediaire (39)
-    à gauche: 23 24 25 26, à droite: 21 22
-texte (40)
-    à gauche: 27, à droite: 19 24
-balise (41)
-    à gauche: 28 29, à droite: 20
-suite_cle_valeur (42)
-    à gauche: 30 31, à droite: 29 30
+    on left: 1 2 3, on right: 0
+var_loc_where (30)
+    on left: 4 5 6, on right: 3 4
+var_loc_in (31)
+    on left: 7 8, on right: 2 6 7
+declaration_var (32)
+    on left: 9, on right: 1
+affectation (33)
+    on left: 10 11, on right: 4 5 6 7 8 10
+expression (34)
+    on left: 12 13, on right: 5 8 9 11
+foret (35)
+    on left: 14 15 16, on right: 12 14
+arbre (36)
+    on left: 17, on right: 14 15 22
+chaine (37)
+    on left: 18 19, on right: 17 18
+intermediaire (38)
+    on left: 20 21 22 23, on right: 18 19
+texte (39)
+    on left: 24, on right: 16 21
+balise (40)
+    on left: 25 26, on right: 17
+suite_cle_valeur (41)
+    on left: 27 28, on right: 26 27
 
 
-État 0
+state 0
 
     0 $accept: . doc $end
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
-    LET         décalage et aller à l'état 5
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    ARITH_EXPR  shift, and go to state 3
+    LET         shift, and go to state 4
 
-    doc                 aller à l'état 6
-    expr_conditionelle  aller à l'état 7
-    var_loc_where       aller à l'état 8
-    var_loc_in          aller à l'état 9
-    declaration_var     aller à l'état 10
-    expression          aller à l'état 11
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
+    doc              go to state 5
+    var_loc_where    go to state 6
+    var_loc_in       go to state 7
+    declaration_var  go to state 8
+    expression       go to state 9
+    foret            go to state 10
+    arbre            go to state 11
+    texte            go to state 12
+    balise           go to state 13
 
 
-État 1
+state 1
 
-   28 balise: TAG .
-   29       | TAG . suite_cle_valeur
+   25 balise: TAG .
+   26       | TAG . suite_cle_valeur
 
-    KEY  décalage et aller à l'état 16
+    KEY  shift, and go to state 14
 
-    $défaut  réduction par utilisation de la règle 28 (balise)
+    $default  reduce using rule 25 (balise)
 
-    suite_cle_valeur  aller à l'état 17
-
-
-État 2
-
-   27 texte: TEXT .
-
-    $défaut  réduction par utilisation de la règle 27 (texte)
+    suite_cle_valeur  go to state 15
 
 
-État 3
+state 2
 
-    4 expr_conditionelle: IF . CONDITION THEN expr_conditionelle ELSE expr_conditionelle
-    5                   | IF . CONDITION THEN expression ELSE expression
+   24 texte: TEXT .
 
-    CONDITION  décalage et aller à l'état 18
-
-
-État 4
-
-   15 expression: ARITH_EXPR .
-
-    $défaut  réduction par utilisation de la règle 15 (expression)
+    $default  reduce using rule 24 (texte)
 
 
-État 5
+state 3
 
-    9 var_loc_in: LET . affectation IN var_loc_in
-   10           | LET . affectation IN expression
-   11 declaration_var: LET . affectation ';'
+   13 expression: ARITH_EXPR .
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IDEN        décalage et aller à l'état 19
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
-
-    expr_conditionelle  aller à l'état 7
-    affectation         aller à l'état 20
-    expression          aller à l'état 21
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
+    $default  reduce using rule 13 (expression)
 
 
-État 6
+state 4
+
+    7 var_loc_in: LET . affectation IN var_loc_in
+    8           | LET . affectation IN expression
+    9 declaration_var: LET . IDEN '=' expression ';'
+
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 16
+    ARITH_EXPR  shift, and go to state 3
+
+    affectation  go to state 17
+    expression   go to state 18
+    foret        go to state 10
+    arbre        go to state 11
+    texte        go to state 12
+    balise       go to state 13
+
+
+state 5
 
     0 $accept: doc . $end
 
-    $end  décalage et aller à l'état 22
+    $end  shift, and go to state 19
 
 
-État 7
-
-   16 expression: expr_conditionelle .
-
-    $défaut  réduction par utilisation de la règle 16 (expression)
-
-
-État 8
+state 6
 
     3 doc: var_loc_where .
-    6 var_loc_where: var_loc_where . WHERE affectation
+    4 var_loc_where: var_loc_where . WHERE affectation
 
-    WHERE  décalage et aller à l'état 23
+    WHERE  shift, and go to state 20
 
-    $défaut  réduction par utilisation de la règle 3 (doc)
+    $default  reduce using rule 3 (doc)
 
 
-État 9
+state 7
 
     2 doc: var_loc_in .
-    8 var_loc_where: var_loc_in . WHERE affectation
+    6 var_loc_where: var_loc_in . WHERE affectation
 
-    WHERE  décalage et aller à l'état 24
+    WHERE  shift, and go to state 21
 
-    $défaut  réduction par utilisation de la règle 2 (doc)
+    $default  reduce using rule 2 (doc)
 
 
-État 10
+state 8
 
     1 doc: declaration_var .
 
-    $défaut  réduction par utilisation de la règle 1 (doc)
+    $default  reduce using rule 1 (doc)
 
 
-État 11
+state 9
 
-    7 var_loc_where: expression . WHERE affectation
+    5 var_loc_where: expression . WHERE affectation
 
-    WHERE  décalage et aller à l'état 25
-
-
-État 12
-
-   14 expression: foret .
-   17 foret: foret . arbre
-
-    TAG  décalage et aller à l'état 1
-
-    $défaut  réduction par utilisation de la règle 14 (expression)
-
-    arbre   aller à l'état 26
-    balise  aller à l'état 15
+    WHERE  shift, and go to state 22
 
 
-État 13
+state 10
 
-   18 foret: arbre .
+   12 expression: foret .
+   14 foret: foret . arbre
 
-    $défaut  réduction par utilisation de la règle 18 (foret)
+    TAG  shift, and go to state 1
 
+    $default  reduce using rule 12 (expression)
 
-État 14
-
-   19 foret: texte .
-
-    $défaut  réduction par utilisation de la règle 19 (foret)
-
-
-État 15
-
-   20 arbre: balise . chaine CLOSE
-
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IDEN        décalage et aller à l'état 27
-    EMPTY_NODE  décalage et aller à l'état 28
-
-    arbre          aller à l'état 29
-    chaine         aller à l'état 30
-    intermediaire  aller à l'état 31
-    texte          aller à l'état 32
-    balise         aller à l'état 15
+    arbre   go to state 23
+    balise  go to state 13
 
 
-État 16
+state 11
 
-   31 suite_cle_valeur: KEY . VALUE
+   15 foret: arbre .
 
-    VALUE  décalage et aller à l'état 33
-
-
-État 17
-
-   29 balise: TAG suite_cle_valeur .
-   30 suite_cle_valeur: suite_cle_valeur . KEY VALUE
-
-    KEY  décalage et aller à l'état 34
-
-    $défaut  réduction par utilisation de la règle 29 (balise)
+    $default  reduce using rule 15 (foret)
 
 
-État 18
+state 12
 
-    4 expr_conditionelle: IF CONDITION . THEN expr_conditionelle ELSE expr_conditionelle
-    5                   | IF CONDITION . THEN expression ELSE expression
+   16 foret: texte .
 
-    THEN  décalage et aller à l'état 35
-
-
-État 19
-
-   12 affectation: IDEN . '=' affectation
-
-    '='  décalage et aller à l'état 36
+    $default  reduce using rule 16 (foret)
 
 
-État 20
+state 13
 
-    9 var_loc_in: LET affectation . IN var_loc_in
-   10           | LET affectation . IN expression
-   11 declaration_var: LET affectation . ';'
+   17 arbre: balise . chaine CLOSE
 
-    IN   décalage et aller à l'état 37
-    ';'  décalage et aller à l'état 38
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 24
+    EMPTY_NODE  shift, and go to state 25
+
+    arbre          go to state 26
+    chaine         go to state 27
+    intermediaire  go to state 28
+    texte          go to state 29
+    balise         go to state 13
 
 
-État 21
+state 14
 
-   13 affectation: expression .
+   28 suite_cle_valeur: KEY . VALUE
 
-    $défaut  réduction par utilisation de la règle 13 (affectation)
+    VALUE  shift, and go to state 30
 
 
-État 22
+state 15
+
+   26 balise: TAG suite_cle_valeur .
+   27 suite_cle_valeur: suite_cle_valeur . KEY VALUE
+
+    KEY  shift, and go to state 31
+
+    $default  reduce using rule 26 (balise)
+
+
+state 16
+
+    9 declaration_var: LET IDEN . '=' expression ';'
+   10 affectation: IDEN . '=' affectation
+
+    '='  shift, and go to state 32
+
+
+state 17
+
+    7 var_loc_in: LET affectation . IN var_loc_in
+    8           | LET affectation . IN expression
+
+    IN  shift, and go to state 33
+
+
+state 18
+
+   11 affectation: expression .
+
+    $default  reduce using rule 11 (affectation)
+
+
+state 19
 
     0 $accept: doc $end .
 
-    $défaut  accepter
+    $default  accept
 
 
-État 23
+state 20
 
-    6 var_loc_where: var_loc_where WHERE . affectation
+    4 var_loc_where: var_loc_where WHERE . affectation
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IDEN        décalage et aller à l'état 19
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 34
+    ARITH_EXPR  shift, and go to state 3
 
-    expr_conditionelle  aller à l'état 7
-    affectation         aller à l'état 39
-    expression          aller à l'état 21
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
+    affectation  go to state 35
+    expression   go to state 18
+    foret        go to state 10
+    arbre        go to state 11
+    texte        go to state 12
+    balise       go to state 13
 
 
-État 24
+state 21
 
-    8 var_loc_where: var_loc_in WHERE . affectation
+    6 var_loc_where: var_loc_in WHERE . affectation
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IDEN        décalage et aller à l'état 19
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 34
+    ARITH_EXPR  shift, and go to state 3
 
-    expr_conditionelle  aller à l'état 7
-    affectation         aller à l'état 40
-    expression          aller à l'état 21
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
+    affectation  go to state 36
+    expression   go to state 18
+    foret        go to state 10
+    arbre        go to state 11
+    texte        go to state 12
+    balise       go to state 13
 
 
-État 25
+state 22
 
-    7 var_loc_where: expression WHERE . affectation
+    5 var_loc_where: expression WHERE . affectation
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IDEN        décalage et aller à l'état 19
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 34
+    ARITH_EXPR  shift, and go to state 3
 
-    expr_conditionelle  aller à l'état 7
-    affectation         aller à l'état 41
-    expression          aller à l'état 21
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
+    affectation  go to state 37
+    expression   go to state 18
+    foret        go to state 10
+    arbre        go to state 11
+    texte        go to state 12
+    balise       go to state 13
 
 
-État 26
+state 23
 
-   17 foret: foret arbre .
+   14 foret: foret arbre .
 
-    $défaut  réduction par utilisation de la règle 17 (foret)
+    $default  reduce using rule 14 (foret)
 
 
-État 27
+state 24
 
-   26 intermediaire: IDEN .
+   23 intermediaire: IDEN .
 
-    $défaut  réduction par utilisation de la règle 26 (intermediaire)
+    $default  reduce using rule 23 (intermediaire)
 
 
-État 28
+state 25
 
-   23 intermediaire: EMPTY_NODE .
+   20 intermediaire: EMPTY_NODE .
 
-    $défaut  réduction par utilisation de la règle 23 (intermediaire)
+    $default  reduce using rule 20 (intermediaire)
 
 
-État 29
+state 26
 
-   25 intermediaire: arbre .
+   22 intermediaire: arbre .
 
-    $défaut  réduction par utilisation de la règle 25 (intermediaire)
+    $default  reduce using rule 22 (intermediaire)
 
 
-État 30
+state 27
 
-   20 arbre: balise chaine . CLOSE
-   21 chaine: chaine . intermediaire
+   17 arbre: balise chaine . CLOSE
+   18 chaine: chaine . intermediaire
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IDEN        décalage et aller à l'état 27
-    EMPTY_NODE  décalage et aller à l'état 28
-    CLOSE       décalage et aller à l'état 42
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 24
+    EMPTY_NODE  shift, and go to state 25
+    CLOSE       shift, and go to state 38
 
-    arbre          aller à l'état 29
-    intermediaire  aller à l'état 43
-    texte          aller à l'état 32
-    balise         aller à l'état 15
+    arbre          go to state 26
+    intermediaire  go to state 39
+    texte          go to state 29
+    balise         go to state 13
 
 
-État 31
+state 28
 
-   22 chaine: intermediaire .
+   19 chaine: intermediaire .
 
-    $défaut  réduction par utilisation de la règle 22 (chaine)
+    $default  reduce using rule 19 (chaine)
 
 
-État 32
+state 29
 
-   24 intermediaire: texte .
+   21 intermediaire: texte .
 
-    $défaut  réduction par utilisation de la règle 24 (intermediaire)
+    $default  reduce using rule 21 (intermediaire)
 
 
-État 33
+state 30
 
-   31 suite_cle_valeur: KEY VALUE .
+   28 suite_cle_valeur: KEY VALUE .
 
-    $défaut  réduction par utilisation de la règle 31 (suite_cle_valeur)
+    $default  reduce using rule 28 (suite_cle_valeur)
 
 
-État 34
+state 31
 
-   30 suite_cle_valeur: suite_cle_valeur KEY . VALUE
+   27 suite_cle_valeur: suite_cle_valeur KEY . VALUE
 
-    VALUE  décalage et aller à l'état 44
+    VALUE  shift, and go to state 40
 
 
-État 35
+state 32
 
-    4 expr_conditionelle: IF CONDITION THEN . expr_conditionelle ELSE expr_conditionelle
-    5                   | IF CONDITION THEN . expression ELSE expression
+    9 declaration_var: LET IDEN '=' . expression ';'
+   10 affectation: IDEN '=' . affectation
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 34
+    ARITH_EXPR  shift, and go to state 3
 
-    expr_conditionelle  aller à l'état 45
-    expression          aller à l'état 46
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
+    affectation  go to state 41
+    expression   go to state 42
+    foret        go to state 10
+    arbre        go to state 11
+    texte        go to state 12
+    balise       go to state 13
 
 
-État 36
+state 33
 
-   12 affectation: IDEN '=' . affectation
+    7 var_loc_in: LET affectation IN . var_loc_in
+    8           | LET affectation IN . expression
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IDEN        décalage et aller à l'état 19
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    ARITH_EXPR  shift, and go to state 3
+    LET         shift, and go to state 43
 
-    expr_conditionelle  aller à l'état 7
-    affectation         aller à l'état 47
-    expression          aller à l'état 21
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
+    var_loc_in  go to state 44
+    expression  go to state 45
+    foret       go to state 10
+    arbre       go to state 11
+    texte       go to state 12
+    balise      go to state 13
 
 
-État 37
+state 34
 
-    9 var_loc_in: LET affectation IN . var_loc_in
-   10           | LET affectation IN . expression
+   10 affectation: IDEN . '=' affectation
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
-    LET         décalage et aller à l'état 48
+    '='  shift, and go to state 46
 
-    expr_conditionelle  aller à l'état 7
-    var_loc_in          aller à l'état 49
-    expression          aller à l'état 50
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
 
+state 35
 
-État 38
+    4 var_loc_where: var_loc_where WHERE affectation .
 
-   11 declaration_var: LET affectation ';' .
+    $default  reduce using rule 4 (var_loc_where)
 
-    $défaut  réduction par utilisation de la règle 11 (declaration_var)
 
+state 36
 
-État 39
+    6 var_loc_where: var_loc_in WHERE affectation .
 
-    6 var_loc_where: var_loc_where WHERE affectation .
+    $default  reduce using rule 6 (var_loc_where)
 
-    $défaut  réduction par utilisation de la règle 6 (var_loc_where)
 
+state 37
 
-État 40
+    5 var_loc_where: expression WHERE affectation .
 
-    8 var_loc_where: var_loc_in WHERE affectation .
+    $default  reduce using rule 5 (var_loc_where)
 
-    $défaut  réduction par utilisation de la règle 8 (var_loc_where)
 
+state 38
 
-État 41
+   17 arbre: balise chaine CLOSE .
 
-    7 var_loc_where: expression WHERE affectation .
+    $default  reduce using rule 17 (arbre)
 
-    $défaut  réduction par utilisation de la règle 7 (var_loc_where)
 
+state 39
 
-État 42
+   18 chaine: chaine intermediaire .
 
-   20 arbre: balise chaine CLOSE .
+    $default  reduce using rule 18 (chaine)
 
-    $défaut  réduction par utilisation de la règle 20 (arbre)
 
+state 40
 
-État 43
+   27 suite_cle_valeur: suite_cle_valeur KEY VALUE .
 
-   21 chaine: chaine intermediaire .
+    $default  reduce using rule 27 (suite_cle_valeur)
 
-    $défaut  réduction par utilisation de la règle 21 (chaine)
 
+state 41
 
-État 44
+   10 affectation: IDEN '=' affectation .
 
-   30 suite_cle_valeur: suite_cle_valeur KEY VALUE .
+    $default  reduce using rule 10 (affectation)
 
-    $défaut  réduction par utilisation de la règle 30 (suite_cle_valeur)
 
+state 42
 
-État 45
+    9 declaration_var: LET IDEN '=' expression . ';'
+   11 affectation: expression .
 
-    4 expr_conditionelle: IF CONDITION THEN expr_conditionelle . ELSE expr_conditionelle
-   16 expression: expr_conditionelle .
+    ';'  shift, and go to state 47
 
-    ELSE  décalage et aller à l'état 51
+    $default  reduce using rule 11 (affectation)
 
-    ELSE  [réduction par utilisation de la règle 16 (expression)]
 
+state 43
 
-État 46
+    7 var_loc_in: LET . affectation IN var_loc_in
+    8           | LET . affectation IN expression
 
-    5 expr_conditionelle: IF CONDITION THEN expression . ELSE expression
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 34
+    ARITH_EXPR  shift, and go to state 3
 
-    ELSE  décalage et aller à l'état 52
+    affectation  go to state 17
+    expression   go to state 18
+    foret        go to state 10
+    arbre        go to state 11
+    texte        go to state 12
+    balise       go to state 13
 
 
-État 47
+state 44
 
-   12 affectation: IDEN '=' affectation .
+    7 var_loc_in: LET affectation IN var_loc_in .
 
-    $défaut  réduction par utilisation de la règle 12 (affectation)
+    $default  reduce using rule 7 (var_loc_in)
 
 
-État 48
+state 45
 
-    9 var_loc_in: LET . affectation IN var_loc_in
-   10           | LET . affectation IN expression
+    8 var_loc_in: LET affectation IN expression .
 
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IDEN        décalage et aller à l'état 19
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
+    $default  reduce using rule 8 (var_loc_in)
 
-    expr_conditionelle  aller à l'état 7
-    affectation         aller à l'état 53
-    expression          aller à l'état 21
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
 
+state 46
 
-État 49
+   10 affectation: IDEN '=' . affectation
 
-    9 var_loc_in: LET affectation IN var_loc_in .
+    TAG         shift, and go to state 1
+    TEXT        shift, and go to state 2
+    IDEN        shift, and go to state 34
+    ARITH_EXPR  shift, and go to state 3
 
-    $défaut  réduction par utilisation de la règle 9 (var_loc_in)
+    affectation  go to state 41
+    expression   go to state 18
+    foret        go to state 10
+    arbre        go to state 11
+    texte        go to state 12
+    balise       go to state 13
 
 
-État 50
+state 47
 
-   10 var_loc_in: LET affectation IN expression .
+    9 declaration_var: LET IDEN '=' expression ';' .
 
-    $défaut  réduction par utilisation de la règle 10 (var_loc_in)
-
-
-État 51
-
-    4 expr_conditionelle: IF CONDITION THEN expr_conditionelle ELSE . expr_conditionelle
-
-    IF  décalage et aller à l'état 3
-
-    expr_conditionelle  aller à l'état 54
-
-
-État 52
-
-    5 expr_conditionelle: IF CONDITION THEN expression ELSE . expression
-
-    TAG         décalage et aller à l'état 1
-    TEXT        décalage et aller à l'état 2
-    IF          décalage et aller à l'état 3
-    ARITH_EXPR  décalage et aller à l'état 4
-
-    expr_conditionelle  aller à l'état 7
-    expression          aller à l'état 55
-    foret               aller à l'état 12
-    arbre               aller à l'état 13
-    texte               aller à l'état 14
-    balise              aller à l'état 15
-
-
-État 53
-
-    9 var_loc_in: LET affectation . IN var_loc_in
-   10           | LET affectation . IN expression
-
-    IN  décalage et aller à l'état 37
-
-
-État 54
-
-    4 expr_conditionelle: IF CONDITION THEN expr_conditionelle ELSE expr_conditionelle .
-
-    $défaut  réduction par utilisation de la règle 4 (expr_conditionelle)
-
-
-État 55
-
-    5 expr_conditionelle: IF CONDITION THEN expression ELSE expression .
-
-    $défaut  réduction par utilisation de la règle 5 (expr_conditionelle)
+    $default  reduce using rule 9 (declaration_var)

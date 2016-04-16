@@ -35,15 +35,15 @@ doc: declaration_var
 |var_loc_in
 |var_loc_where
 ;
-////////////////////////////CONDITIONS////////////////////////////////////////////////////
-expr_conditionelle: IF CONDITION THEN expr_conditionelle ELSE expr_conditionelle
-|IF CONDITION THEN expression ELSE expression
+////////////////////////////CONDITIONS///////////////////////////////////////////////
+/* expr_conditionelle: IF CONDITION THEN expr_conditionelle ELSE expr_conditionelle */
+/* |IF CONDITION THEN expression ELSE expression */
 
 ////////////////////////////VARIABLES_LOCALES////////////////////////////////////////
 
 var_loc_where: var_loc_where WHERE affectation
 |expression WHERE affectation
-|var_loc_in WHERE affectation
+	       //|var_loc_in WHERE affectation
 ;
 
 var_loc_in: LET affectation IN var_loc_in
@@ -52,23 +52,25 @@ var_loc_in: LET affectation IN var_loc_in
 
 /////////////////////////DECLARATION_VARIABLES///////////////////////////////////////
 
-declaration_var: LET affectation ';'
-
-
-affectation: IDEN '=' affectation {
+declaration_var: LET IDEN '=' expression ';'{
   variable new_var = create_variable($1, $3);
   add_variable(str, new_var);
   $$ = $3;
  }
-|expression {$$ = $1;}
-	     //|garbre
-;
+
+
+/* affectation: IDEN '=' affectation { */
+
+/*  } */
+/* |expression {$$ = $1;} */
+/* //|garbre */
+/* ; */
 
 //expression---ajouter parantheses
 
 expression: foret {$$ = $1;}
 | ARITH_EXPR {$$ = $1;} //TO CHANGE
-|expr_conditionelle
+//|expr_conditionelle
 ;
 ///////////////////////////////FORET/////////////////////////////////////////////////
 foret: foret arbre {add_tree_to_forest($2, $1);}
