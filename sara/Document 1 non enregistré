@@ -12,12 +12,11 @@ int fileno(FILE*);
 %x TEXT_MODE_2
 
 %option noinput nounput
+
 IDEN [A-Za-z_][A-Za-z0-9_]*
-NB ([[:digit:]]+(\.[[:digit:]]*)?)|(\.[[:digit:]]+)
-XML [xX][mM][lL]
-SAUF_XML [^{XML}[:^space:]]
-TAG [{SAUF_XML}+[A-Za-z0-9]*\.\_\']+|[\_[A-Za-z0-9]*\.\_\']+
-KEY [{SAUF_XML}+[A-Za-z0-9]*\.\_\']+|[\_[A-Za-z0-9]*\.\_\']+
+NB [[:digit:]]+
+KEY [[:alpha:]]+"="\"
+TAG [[:alpha:]]+
 %%
   
 fun {printf("FUN");}
@@ -62,9 +61,8 @@ match {printf("MATCH");}
 
 <ATTRIBUT>{KEY} {
   printf("KEY\n");
+  BEGIN TEXT_MODE_2;
 }
-<ATTRIBUT>\" {BEGIN TEXT_MODE_2;}
-<ATTRIBUT>[ =] {;}
 <ATTRIBUT>"]" {BEGIN INITIAL;}
 <ATTRIBUT>"]/" {
   printf("EMPTY_NODE\n");
@@ -88,3 +86,4 @@ int main (void)
   yylex();
   return 0;
 }
+

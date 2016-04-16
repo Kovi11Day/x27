@@ -2,80 +2,89 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "struct_tree.h"
-#include "web_compiler.tab.h"
-  int fileno(FILE*);
+  //#include "struct_tree.h"
+  //#include "web_compiler.tab.h"
+int fileno(FILE*);
 %}
 %x ATTRIBUT
-%x COMMENTAIRE
-%x TEXT_MODE
+%x TEXT_MODE_1
+%x TEXT_MODE_2
+
 %option noinput nounput
 
 IDEN [A-Za-z_][A-Za-z0-9_]*
 NB ([[:digit:]]+(\.[[:digit:]]*)?)|(\.[[:digit:]]+)
-XML ^[xX]^[mM]^[lL]      
+XML [xX][mM][lL]
+SAUF_XML [^{XML}[:^space:]]
+TAG [{SAUF_XML}+[A-Za-z0-9]*\.\_\']+|[\_[A-Za-z0-9]*\.\_\']+
+KEY [[:alpha:]]+\=\"
 %%
-
-
-fun  {return FUN;}
-rec  {return REC;}
-let  {return LET;}
- =   {return =;}
-if   {return IF;}
-where  {return WHERE;}
-in  {return IN;}
-enum  {return ENUM;}
-then {return THEN;}
-else {return ELSE;}
-with {return WITH;}
-match {return MATCH;}
+fun {printf("FUN");}//return FUN;}
+rec {printf("REC");}//return REC;}
+let {printf("LET");}//return LET;}
+if  {printf("IF");}//return IF;}
+where {printf("WHERE");}//return WHERE;}
+in  {printf("IN");}//return IN;}
+num {printf("NUM");}//return NUM;}
+then {printf("THEN");}//return THEN;}
+ else {printf("ELSE");}//return ELSE;}
+with {printf("WITH");}//return WITH;}
+match {printf("MATCH");}//return MATCH;}
      
 
 
-{IDEN} {return IDEN;}
+{IDEN} {//yyval.name=strdup(yytext);
+  //return IDEN;
+  printf("IDEN");}
 
-{NB} {yyval.value=atof(yytext);
-        return NUM;
-        return ID;}
-
-{XML} {return XML;}
+{NB }{//yyval.value=atof(yytext);
+  //return NUM;
+  printf("NUM");}
 
 [< > >= =< == . , ;  ] {return *yytext;}
-[+ * ( ) \- / \% \*\*|\^]{return *yytext;}
+[+ * ( ) \- / \% \*\*|\^] {return *yytext;}
      
+\" {BEGIN TEXT_MODE_1;}
 
-[[:alpha:]]+ {
-  yylval.name = strdup(yytext);
-  return TAG;
-}
-"}" {return CLOSE;}
+<TEXT_MODE_1>\" {BEGIN INITIAL;}
 
-\" {BEGIN TEXT_MODE;}
-
-<TEXT_MODE>\" {BEGIN INITIAL;}
-
-<TEXT_MODE>[[:alpha:]]+ {
-  yylval.name = strdup(yytext);
- return TEXT;
+<TEXT_MODE_1>(.|\n)+ {
+  //yylval.name=strdup(yytext);
+  printf("TEXT");//return TEXT;
  }
+
+
+ <TEXT_MODE_2>\" {ECHO ;BEGIN INITIAL;}
+
+<TEXT_MODE_2>(.)+ {
+  //yylval.name = strdup(yytext);
+  //return VALUE;
+  printf("VALUE");
+ }
+   
       
-<ATTRIBUT>\" {BEGIN INITIAL;}
+\[ {BEGIN <ATTRIBUT>;}
 
-<ATTRIBUT>.{IDEN} {
-   yylval.name = strdup(yytext)
-    return KEY;
+<ATTRIBUT>{KEY} {//yylval.name = strdup(yytext)
+  // return KEY;
+  printf("KEY");
+  BEGIN TEXT_MODE_2;
  }
+<ATTRIBUT>\] {BEGIN INITIAL;}
+<ATTRIBUT>\]\/ {printf("EMPTY_NODE");}//return EMPTY_NODE;BEGIN INITIAL;}
 
+{TAG}\{ {//return TAG;
+  printf("TAG");
+  BEGIN TEXT_MODE_1;}
+{TAG}\[ {//return TAG;
+  printf("TAG");
+  BEGIN ATTRIBUT;}
+{TAG}\/ {//yylval.name = strdup(yytext);
+  // return EMPTY_NODE;
+  printf("EMPTY_NODE");}
+/* \{\}  {} */
+/* \{\{* {printf("\{");} */
+/* \}\}* {printf("\}");} */
+\}    {  printf("CLOSE");}//return CLOSE;}
+\{\"  {BEGIN TEXT_MODE_1;}
 
-
-<ATTRIBUT>\" {BEGIN INITIAL;}
-//<AATRIBUT>{IDEN}.{WWW.}{IDEN}{
-//yylval.name = strdup(yytext);
-<ATTRIBUT>.{IDEN} {
-    yylval.name = strdup(yytext);
-   return VALUE;
- }
-     
-
-
-.|\n {}
