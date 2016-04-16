@@ -8,8 +8,14 @@
 
 %}
 %union {
-  double real;
-}
+		double real;
+		char* var;
+		}
+%token <real> NBR
+%token <var> ID
+%token PUISSANCE SUM
+%type <real> E T S P
+
 //grammaire present SANS CONFLITS
 //grammaire pour construire arbre + attributs + empty nodes + var
 //grammaire pour dec, var_locales 
@@ -19,9 +25,8 @@
 %token <real> NUM 
 %token <real> EXPR   other
 %token PUIS
-%type <real>  arith_expr stmt matched unmatched  	
-%left '+''-'
-%left '*''/'
+%type <real>  stmt matched unmatched  	
+%right PUISSANCE  
 %%
 
 /////////////////////////////Forest///////////////////////////////////////////////////
@@ -53,18 +58,42 @@ suite_cle_valeur: suite_cle_valeur KEY VALUE //<Attributs>$$=add_cle_valeur($1, 
 ;
 
 /////////////////////////////Expresssion Arithme///////////////////////////////////////////////////	
-s:	s arith_expr 		
-	|			
-	;	
- arith_expr:
-        NUM 						   
-|        arith_expr '+' arith_expr    
-|        arith_expr '-'  arith_expr	    
-|        arith_expr '*' arith_expr		
-|        arith_expr'/' 	arith_expr	 	
-|        arith_expr '%' arith_expr 		
-|        arith_expr PUIS arith_expr  	
+	
+fin: calcule'\n' 			////{return 0;}
+calcule : calcule E ';'  	///{i++;printf("Résultat de l'opération n°%d : %f \n",i,$2);}
+|  
 ;
+
+E : E'+'T   					 ///{ $$= $1 + $3;}	
+| E'-'T 						////{ $$= $1 - $3;}
+
+			
+| T 							///{$$ = $1;}
+;
+
+T : T'*'P 						/////{ $$= $1 * $3;}
+
+|T'/'P 						////{ if($3 != 0){
+								///$$= $1 / $3;}
+								/////else {
+								/////	printf("le dénominateur ne doit pas étre null \n");
+								/////		return 0;}
+		}		
+|	P 								/////{ $$ = $1;}
+;
+
+P: 	S PUISSANCE P 							 //////{ $$= pow($1,$3);}	
+| S 											//////{ $$ = $1;}
+| '-' P {
+	$$ = (-$2) ;
+	fprintf(stderr, "p -> -p\n");
+	}
+|'('E')' 									///////{$$ = ($2) ;}
+;
+
+S: NBR										//////{ $$= $1;}
+;
+
 ///////////////////////////////////IF THEN ELSE  Conditional ////////////////////////////////////////////////////////
 
 e:  e stmt
