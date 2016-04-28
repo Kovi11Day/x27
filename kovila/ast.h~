@@ -120,11 +120,8 @@ struct ast * mk_cond(struct ast * cond, struct ast * then_br, struct ast * else_
 struct ast * mk_declrec(char * id, struct ast * body);
 
 //additional
+struct attributes* create_attribute(char* key, char* value);
+struct attributes* add_attribute(struct attributes* att, char* key, char* val );
 
-struct attributes* create_attribute(char* key, char* val);
-struct attributes* add_key_to_attr(struct attributes* att, char* key);
-struct attributes* add_val_to_attr(struct attributes* att, char* val);
-  
 struct ast* add_daughters (struct ast* parent, struct ast* daughters);
 #endif
-

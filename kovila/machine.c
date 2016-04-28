@@ -5,15 +5,118 @@
 #include "machine.h"
 #include "pattern_matching.h"
 
+void print_open_tag_with_attr(char* label){
+  printf("<%s ",label);
+  return;
+}
+
+void print_attributes(struct attributes* attributes){
+  if (attributes == NULL)
+    return;
+  else{
+    printf("%s=\"%s\" ", attributes->key->node->str, attributes->value->node->str );
+    print_attributes(attributes->next);
+  }
+}
+
+void print_open_tag(char* label){
+  printf("<%s>\n", label);
+}
+
+void print_close_tag(char* label){
+  printf("</%s>", label);
+}
+
+//TODO-AJOUTER QUOTES AVANT CHAINE DE TEXTE
+void printing_words (struct ast * ast){
+  if (ast == NULL)
+    return;
+  
+  enum ast_type tp = get_ast_type(ast);
+  
+  switch(tp){
+  case DECLREC:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case COND:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case MATCH:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case FUN:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case APP:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case IMPORT:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case VAR:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case UNARYOP:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case BINOP:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case INTEGER:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case FOREST:
+    printing_words(ast->node->forest->head);
+    printing_words(ast->node->forest->tail);
+    break;
+  case WORD:
+    printf("%s ", ast->node->str);
+    break;
+  case TREE:
+    
+    //printing open tag
+    if (ast->node->tree->attributes != NULL){
+      //open tag with attributes
+      print_open_tag_with_attr(ast->node->tree->label);
+      print_attributes(ast->node->tree->attributes);
+    }else
+      //open tag without attributes
+      print_open_tag(ast->node->tree->label);
+    
+    //printing content
+    printing_words(ast->node->tree->daughters);
+    
+    //printing close tag
+    if (ast->node->tree->nullary == 1)
+      printf("/>");
+    else
+      print_close_tag(ast->node->tree->label);
+    break;
+  }
+  return;
+}
+
 
 void emit( char * file, struct ast * ast){
     assert(file!=NULL && (ast ==NULL || ast!= NULL));
     FILE* result;
-    fopen(file, "a+");
-    fprintf(result, process_instruction(ast));
- fclose(result):
+    result = fopen(file, "a+");
+    
+    //fprintf(result, process_instruction(ast));
+    fclose(result);
     return;
 }
+
 
 struct env * mk_env(char * var, struct closure * value, struct env * next){
     struct env * res = malloc(sizeof(struct env));
@@ -303,16 +406,13 @@ void reconstruct_forest(struct machine * m, struct ast * tail){
 }
 
 void pop_forestcomphead(struct machine * m){
-    char * c;
     struct ast * head;
     struct ast * tail;
     struct env * env;
     enum ast_type tp = get_ast_type(m->closure->value);
     switch(tp){
     case INTEGER:
-        c=malloc(21*sizeof(char));
-        sprintf(c,"%d",m->closure->value->node->num);
-        head= mk_word(c);
+        head= mk_word(string_of_int(m->closure->value->node->num));
         break;
     case TREE:
     case WORD:
@@ -476,8 +576,7 @@ void on_integer(struct machine * m){
             exit(1);
             break;
         case TREECOMPFOREST:
-            fprintf(stderr,"Erreur de typage, un entier ne peut constituer une forÃªt.");
-            exit(1);
+            pop_treecompforest(m);
             break;
         case ATTCOMPKEY:
             fprintf(stderr,"Erreur de typage, un entier ne peut Ãªtre la clÃ© d'un attribut.");
@@ -494,8 +593,7 @@ void on_integer(struct machine * m){
             pop_forestcomphead(m);
             break;
         case FORESTCOMPTAIL:
-            fprintf(stderr,"Erreur de typage, un entier ne peut Ãªtre utilisÃ© comme forÃªt.");
-            exit(1);
+            pop_forestcomptail(m);
             break;
         case FUNCTION:
             pop_function(m);
@@ -806,8 +904,7 @@ void on_word(struct machine * m){
             exit(1);
             break;
         case TREECOMPFOREST:
-            fprintf(stderr,"Erreur de typage, un mot ne peut constituer une forÃªt.");
-            exit(1);
+            pop_treecompforest(m);
             break;
         case ATTCOMPKEY:
             pop_attcompkey(m);
@@ -855,6 +952,9 @@ void on_tree(struct machine * m){
             switch(m->stack->top->type){
             case FUNCTION:
                 pop_function(m);
+                break;
+            case TREECOMPFOREST:
+                pop_treecompforest(m);
                 break;
             case FORESTCOMPHEAD:
                 pop_forestcomphead(m);

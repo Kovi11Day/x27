@@ -107,34 +107,20 @@ struct ast * mk_declrec(char * id, struct ast * body){
 
 
 //additional------------------------------------------------------
-struct attributes* create_attribute(char* key, char* val){
+struct attributes* create_attribute(char* key, char* value){
+	
 	struct attributes* att = malloc(sizeof(struct attributes));
 	att->key = mk_word(key);
 	att->value = mk_word(value);
 	att->next = NULL;
-	att->is_value=1;
+	att->is_value=false;
 	return att;
 }
 
-struct attributes* add_key_to_attr(struct attributes* att, char* key){
-  if (att->key == NULL){
-    att->key = mk_word(key);
-    return att;
-  }else{
-    att->next = create_attribute(key, NULL);
-    return att->next;
-  }
+struct attributes* add_attribute(struct attributes* att, char* key, char* val ){
+	att->next = create_attribute(key, val);
+	return att;
 }
-
-struct attributes* add_val_to_attr(struct attributes* att, char* val){
-  att->next->value = mk_word(value);
-  return att->next;
-}
-
-/* struct attributes* add_attribute(struct attributes* att, char* key, char* val ){ */
-/* 	att->next = create_attribute(key, val); */
-/* 	return att; */
-/* } */
 
 struct ast* add_daughters (struct ast* parent, struct ast* daughters){
   parent->node->tree->daughters = daughters;

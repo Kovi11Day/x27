@@ -12,6 +12,7 @@ $(name): lex.yy.o $(name).tab.o machine.o pattern_matching.o import.o ast.o
 
 
 
+import.o: import.c machine.h
 
 machine.o: machine.c ast.h pattern.h
 
@@ -19,7 +20,7 @@ pattern_matching.o: pattern_matching.c machine.h ast.h pattern.h
 
 ast.o: ast.c pattern.h chemin.h 
 
-import.o: import.c machine.h
+
 
 lex.yy.c: $(name).l $(name).tab.h
 	$(LEX) $(name).l

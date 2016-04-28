@@ -5,10 +5,14 @@
 #include "machine.h"
 #include "pattern_matching.h"
 
+void printing_forest (struct ast * ast)
 
 void emit( char * file, struct ast * ast){
     assert(file!=NULL && (ast ==NULL || ast!= NULL));
-    fprintf(stderr,"Vous devez implÃ©menter la fonction emit");
+    FILE* result;
+    result = fopen(file, "a+");
+    //fprintf(result, process_instruction(ast));
+    fclose(result);
     return;
 }
 
