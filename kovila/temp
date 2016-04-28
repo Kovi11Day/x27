@@ -21,7 +21,7 @@ KEY [[:alpha:]]+\=\"
 TAG ([[:alpha:]]+"{")|([[:alpha:]]+"{")
 %%
 
-iamanattribute {return ATTR_FOUND;}
+
 fun {return FUN;}
 rec {return REC;}
 let {printf("msg from lex: LET found\n"); return LET;}
@@ -32,7 +32,7 @@ num {return NUM;}
 then {return THEN;}
 "else" {return ELSE;}
 match {return MATCH;}
-
+     
 
 
 {IDEN} {yylval.name=strdup(yytext);

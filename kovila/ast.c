@@ -63,9 +63,6 @@ struct ast * mk_tree(char * label, bool is_value, bool nullary, bool space,
     e->node->tree->attributes=att;
     e->node->tree->daughters=daughters;
 
-    //additions
-    e->node->tree->right = NULL;
-    e->node->tree->last = e;
     return e;
 }
 struct ast * mk_forest(bool is_value, struct ast * head, struct ast * tail){
@@ -107,4 +104,29 @@ struct ast * mk_declrec(char * id, struct ast * body){
     return e;
 }
 
+
+
+//additional------------------------------------------------------
+struct attributes* create_attribute(char* key, char* value){
+	
+	struct attributes* att = malloc(sizeof(struct attributes));
+	att->key = mk_word(key);
+	att->value = mk_word(value);
+	att->next = NULL;
+	att->is_value=false;
+	return att;
+}
+
+struct attributes* add_attribute(struct attributes* att, char* key, char* val ){
+	att->next = create_attribute(key, val);
+	return att;
+}
+
+struct ast* add_daughters (struct ast* parent, struct ast* daughters){
+  parent->node->tree->daughters = daughters;
+  return parent;
+}
+
+
+//------------------------------------------------------
 
