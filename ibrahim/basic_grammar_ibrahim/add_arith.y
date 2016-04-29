@@ -96,22 +96,7 @@ S: NBR										//////{ $$= $1;}
 
 ///////////////////////////////////IF THEN ELSE  Conditional ////////////////////////////////////////////////////////
 
-e:  e stmt
-	|
-	;
 
-stmt:
-	matched
-|	unmatched
-;
-matched: if EXPR then matched else matched           
-|		 other									
-|		'('matched')'								
-;		
-unmatched: if EXPR then stmt							
-|			if EXPR then matched else unmatched 		
-|			'('unmatched')'								
-;
 
 //////////////////////Function/////////////////////
 
