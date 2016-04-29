@@ -8,11 +8,11 @@ forest0 -- "tree1:div"
 forest2 [color="chartreuse1"]
 forest2 -- forest3
 forest3 [color="chartreuse1"]
-forest3 -- "txt4:Ceci est un lien qui vous conduira au"
-"txt4:Ceci est un lien qui vous conduira au" [color="blanchedalmond"]
+forest3 -- "txt4:Ceci est un lien qui vous conduira au "
+"txt4:Ceci est un lien qui vous conduira au " [color="blanchedalmond"]
 forest3 -- "tree5:a"
-"tree5:a" -- "txt6:www"
-"txt6:www" [color="blanchedalmond"]
-forest2 -- "txt4:à Bordeaux."
-"txt4:à Bordeaux." [color="blanchedalmond"]
+"tree5:a" -- "txt6:LaBRI"
+"txt6:LaBRI" [color="blanchedalmond"]
+forest2 -- "txt4: à Bordeaux."
+"txt4: à Bordeaux." [color="blanchedalmond"]
 }

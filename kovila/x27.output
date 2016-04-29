@@ -1,4 +1,4 @@
-Terminals which are not used
+Terminaux inutilisés dans la grammaire
 
    KEY
    VALUE
@@ -10,6 +10,8 @@ Terminals which are not used
    ELSE
    REC
    WITH
+   EMITT
+   OPEN_FOREST
    '+'
    '-'
    '*'
@@ -17,563 +19,633 @@ Terminals which are not used
    '^'
 
 
-Grammar
-
-    0 $accept: doc $end
-
-    1 doc: var_declaration
-    2    | var_loc_in
-    3    | var_loc_where
-    4    | expression
-
-    5 var_loc_where: expression WHERE IDEN '=' var_loc_where
-    6              | expression WHERE IDEN '=' var_loc_in
-    7              | expression WHERE IDEN '=' expression
-
-    8 var_loc_in: LET IDEN '=' expression IN var_loc_in
-    9           | LET IDEN '=' expression IN expression
-
-   10 var_declaration: LET partial_declaration
-
-   11 partial_declaration: IDEN '=' partial_declaration
-   12                    | IDEN '=' expression ';'
-
-   13 expression: foret
-   14           | ARITH_EXPR
-
-   15 foret: foret arbre
-   16      | arbre
-   17      | texte
-
-   18 arbre: balise chaine CLOSE
-
-   19 chaine: chaine intermediaire
-   20       | intermediaire
-
-   21 intermediaire: EMPTY_NODE
-   22              | texte
-   23              | arbre
-   24              | IDEN
-
-   25 texte: TEXT
-
-   26 balise: TAG
-   27       | TAG ATTR_FOUND
+État 13 conflits: 1 décalage/réduction
 
 
-Terminals, with rules where they appear
+Grammaire
+
+    0 $accept: vrai_final $end
+
+    1 vrai_final: final_doc
+
+    2 final_doc: final_doc doc
+    3          | doc
+
+    4 doc: var_declaration
+    5    | var_loc_in
+    6    | var_loc_where
+    7    | expression
+
+    8 var_loc_where: expression WHERE IDEN '=' var_loc_where
+    9              | expression WHERE IDEN '=' var_loc_in
+   10              | expression WHERE IDEN '=' expression
+
+   11 var_loc_in: LET IDEN '=' expression IN var_loc_in
+   12           | LET IDEN '=' expression IN expression
+
+   13 var_declaration: LET partial_declaration
+
+   14 partial_declaration: IDEN '=' partial_declaration
+   15                    | IDEN '=' expression ';'
+
+   16 expression: foret
+   17           | ARITH_EXPR
+   18           | IDEN
+
+   19 foret: foret arbre
+   20      | arbre
+   21      | texte
+
+   22 arbre: balise chaine CLOSE
+
+   23 chaine: chaine intermediaire
+   24       | intermediaire
+
+   25 intermediaire: EMPTY_NODE
+   26              | texte
+   27              | arbre
+   28              | IDEN
+
+   29 texte: TEXT
+
+   30 balise: TAG
+   31       | TAG ATTR_FOUND
+
+
+Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
 '*' (42)
 '+' (43)
 '-' (45)
 '/' (47)
-';' (59) 12
-'=' (61) 5 6 7 8 9 11 12
+';' (59) 15
+'=' (61) 8 9 10 11 12 14 15
 '^' (94)
 error (256)
 KEY (258)
 VALUE (259)
-TAG (260) 26 27
-TEXT (261) 25
-IDEN (262) 5 6 7 8 9 11 12 24
-EMPTY_NODE (263) 21
-ATTR_FOUND (264) 27
+TAG (260) 30 31
+TEXT (261) 29
+IDEN (262) 8 9 10 11 12 14 15 18 28
+EMPTY_NODE (263) 25
+ATTR_FOUND (264) 31
 OPEN (265)
-CLOSE (266) 18
+CLOSE (266) 22
 NUM (267)
 IF (268)
 CONDITION (269)
 THEN (270)
 ELSE (271)
-ARITH_EXPR (272) 14
-LET (273) 8 9 10
+ARITH_EXPR (272) 17
+LET (273) 11 12 13
 REC (274)
-IN (275) 8 9
-WHERE (276) 5 6 7
+IN (275) 11 12
+WHERE (276) 8 9 10
 WITH (277)
+EMITT (278)
+OPEN_FOREST (279)
 
 
-Nonterminals, with rules where they appear
+Non-terminaux, suivis des règles où ils apparaissent
 
-$accept (30)
-    on left: 0
-doc (31)
-    on left: 1 2 3 4, on right: 0
-var_loc_where (32)
-    on left: 5 6 7, on right: 3 5
-var_loc_in (33)
-    on left: 8 9, on right: 2 6 8
-var_declaration (34)
-    on left: 10, on right: 1
-partial_declaration (35)
-    on left: 11 12, on right: 10 11
-expression (36)
-    on left: 13 14, on right: 4 5 6 7 8 9 12
-foret (37)
-    on left: 15 16 17, on right: 13 15
-arbre (38)
-    on left: 18, on right: 15 16 23
-chaine (39)
-    on left: 19 20, on right: 18 19
-intermediaire (40)
-    on left: 21 22 23 24, on right: 19 20
-texte (41)
-    on left: 25, on right: 17 22
-balise (42)
-    on left: 26 27, on right: 18
+$accept (32)
+    à gauche: 0
+vrai_final (33)
+    à gauche: 1, à droite: 0
+final_doc (34)
+    à gauche: 2 3, à droite: 1 2
+doc (35)
+    à gauche: 4 5 6 7, à droite: 2 3
+var_loc_where (36)
+    à gauche: 8 9 10, à droite: 6 8
+var_loc_in (37)
+    à gauche: 11 12, à droite: 5 9 11
+var_declaration (38)
+    à gauche: 13, à droite: 4
+partial_declaration (39)
+    à gauche: 14 15, à droite: 13 14
+expression (40)
+    à gauche: 16 17 18, à droite: 7 8 9 10 11 12 15
+foret (41)
+    à gauche: 19 20 21, à droite: 16 19
+arbre (42)
+    à gauche: 22, à droite: 19 20 27
+chaine (43)
+    à gauche: 23 24, à droite: 22 23
+intermediaire (44)
+    à gauche: 25 26 27 28, à droite: 23 24
+texte (45)
+    à gauche: 29, à droite: 21 26
+balise (46)
+    à gauche: 30 31, à droite: 22
 
 
-state 0
+État 0
 
-    0 $accept: . doc $end
+    0 $accept: . vrai_final $end
 
-    TAG         shift, and go to state 1
-    TEXT        shift, and go to state 2
-    ARITH_EXPR  shift, and go to state 3
-    LET         shift, and go to state 4
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 3
+    ARITH_EXPR  décalage et aller à l'état 4
+    LET         décalage et aller à l'état 5
 
-    doc              go to state 5
-    var_loc_where    go to state 6
-    var_loc_in       go to state 7
-    var_declaration  go to state 8
-    expression       go to state 9
-    foret            go to state 10
-    arbre            go to state 11
-    texte            go to state 12
-    balise           go to state 13
+    vrai_final       aller à l'état 6
+    final_doc        aller à l'état 7
+    doc              aller à l'état 8
+    var_loc_where    aller à l'état 9
+    var_loc_in       aller à l'état 10
+    var_declaration  aller à l'état 11
+    expression       aller à l'état 12
+    foret            aller à l'état 13
+    arbre            aller à l'état 14
+    texte            aller à l'état 15
+    balise           aller à l'état 16
 
 
-state 1
+État 1
 
-   26 balise: TAG .
-   27       | TAG . ATTR_FOUND
+   30 balise: TAG .
+   31       | TAG . ATTR_FOUND
 
-    ATTR_FOUND  shift, and go to state 14
+    ATTR_FOUND  décalage et aller à l'état 17
 
-    $default  reduce using rule 26 (balise)
+    $défaut  réduction par utilisation de la règle 30 (balise)
 
 
-state 2
+État 2
 
-   25 texte: TEXT .
+   29 texte: TEXT .
 
-    $default  reduce using rule 25 (texte)
+    $défaut  réduction par utilisation de la règle 29 (texte)
 
 
-state 3
+État 3
 
-   14 expression: ARITH_EXPR .
+   18 expression: IDEN .
 
-    $default  reduce using rule 14 (expression)
+    $défaut  réduction par utilisation de la règle 18 (expression)
 
 
-state 4
+État 4
 
-    8 var_loc_in: LET . IDEN '=' expression IN var_loc_in
-    9           | LET . IDEN '=' expression IN expression
-   10 var_declaration: LET . partial_declaration
+   17 expression: ARITH_EXPR .
 
-    IDEN  shift, and go to state 15
+    $défaut  réduction par utilisation de la règle 17 (expression)
 
-    partial_declaration  go to state 16
 
+État 5
 
-state 5
+   11 var_loc_in: LET . IDEN '=' expression IN var_loc_in
+   12           | LET . IDEN '=' expression IN expression
+   13 var_declaration: LET . partial_declaration
 
-    0 $accept: doc . $end
+    IDEN  décalage et aller à l'état 18
 
-    $end  shift, and go to state 17
+    partial_declaration  aller à l'état 19
 
 
-state 6
+État 6
 
-    3 doc: var_loc_where .
+    0 $accept: vrai_final . $end
 
-    $default  reduce using rule 3 (doc)
+    $end  décalage et aller à l'état 20
 
 
-state 7
+État 7
 
-    2 doc: var_loc_in .
+    1 vrai_final: final_doc .
+    2 final_doc: final_doc . doc
 
-    $default  reduce using rule 2 (doc)
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 3
+    ARITH_EXPR  décalage et aller à l'état 4
+    LET         décalage et aller à l'état 5
 
+    $défaut  réduction par utilisation de la règle 1 (vrai_final)
 
-state 8
+    doc              aller à l'état 21
+    var_loc_where    aller à l'état 9
+    var_loc_in       aller à l'état 10
+    var_declaration  aller à l'état 11
+    expression       aller à l'état 12
+    foret            aller à l'état 13
+    arbre            aller à l'état 14
+    texte            aller à l'état 15
+    balise           aller à l'état 16
 
-    1 doc: var_declaration .
 
-    $default  reduce using rule 1 (doc)
+État 8
 
+    3 final_doc: doc .
 
-state 9
+    $défaut  réduction par utilisation de la règle 3 (final_doc)
 
-    4 doc: expression .
-    5 var_loc_where: expression . WHERE IDEN '=' var_loc_where
-    6              | expression . WHERE IDEN '=' var_loc_in
-    7              | expression . WHERE IDEN '=' expression
 
-    WHERE  shift, and go to state 18
+État 9
 
-    $default  reduce using rule 4 (doc)
+    6 doc: var_loc_where .
 
+    $défaut  réduction par utilisation de la règle 6 (doc)
 
-state 10
 
-   13 expression: foret .
-   15 foret: foret . arbre
+État 10
 
-    TAG  shift, and go to state 1
+    5 doc: var_loc_in .
 
-    $default  reduce using rule 13 (expression)
+    $défaut  réduction par utilisation de la règle 5 (doc)
 
-    arbre   go to state 19
-    balise  go to state 13
 
+État 11
 
-state 11
+    4 doc: var_declaration .
 
-   16 foret: arbre .
+    $défaut  réduction par utilisation de la règle 4 (doc)
 
-    $default  reduce using rule 16 (foret)
 
+État 12
 
-state 12
+    7 doc: expression .
+    8 var_loc_where: expression . WHERE IDEN '=' var_loc_where
+    9              | expression . WHERE IDEN '=' var_loc_in
+   10              | expression . WHERE IDEN '=' expression
 
-   17 foret: texte .
+    WHERE  décalage et aller à l'état 22
 
-    $default  reduce using rule 17 (foret)
+    $défaut  réduction par utilisation de la règle 7 (doc)
 
 
-state 13
+État 13
 
-   18 arbre: balise . chaine CLOSE
+   16 expression: foret .
+   19 foret: foret . arbre
 
-    TAG         shift, and go to state 1
-    TEXT        shift, and go to state 2
-    IDEN        shift, and go to state 20
-    EMPTY_NODE  shift, and go to state 21
+    TAG  décalage et aller à l'état 1
 
-    arbre          go to state 22
-    chaine         go to state 23
-    intermediaire  go to state 24
-    texte          go to state 25
-    balise         go to state 13
+    TAG       [réduction par utilisation de la règle 16 (expression)]
+    $défaut  réduction par utilisation de la règle 16 (expression)
 
+    arbre   aller à l'état 23
+    balise  aller à l'état 16
 
-state 14
 
-   27 balise: TAG ATTR_FOUND .
+État 14
 
-    $default  reduce using rule 27 (balise)
+   20 foret: arbre .
 
+    $défaut  réduction par utilisation de la règle 20 (foret)
 
-state 15
 
-    8 var_loc_in: LET IDEN . '=' expression IN var_loc_in
-    9           | LET IDEN . '=' expression IN expression
-   11 partial_declaration: IDEN . '=' partial_declaration
-   12                    | IDEN . '=' expression ';'
+État 15
 
-    '='  shift, and go to state 26
+   21 foret: texte .
 
+    $défaut  réduction par utilisation de la règle 21 (foret)
 
-state 16
 
-   10 var_declaration: LET partial_declaration .
+État 16
 
-    $default  reduce using rule 10 (var_declaration)
+   22 arbre: balise . chaine CLOSE
 
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 24
+    EMPTY_NODE  décalage et aller à l'état 25
 
-state 17
+    arbre          aller à l'état 26
+    chaine         aller à l'état 27
+    intermediaire  aller à l'état 28
+    texte          aller à l'état 29
+    balise         aller à l'état 16
 
-    0 $accept: doc $end .
 
-    $default  accept
+État 17
 
+   31 balise: TAG ATTR_FOUND .
 
-state 18
+    $défaut  réduction par utilisation de la règle 31 (balise)
 
-    5 var_loc_where: expression WHERE . IDEN '=' var_loc_where
-    6              | expression WHERE . IDEN '=' var_loc_in
-    7              | expression WHERE . IDEN '=' expression
 
-    IDEN  shift, and go to state 27
+État 18
 
+   11 var_loc_in: LET IDEN . '=' expression IN var_loc_in
+   12           | LET IDEN . '=' expression IN expression
+   14 partial_declaration: IDEN . '=' partial_declaration
+   15                    | IDEN . '=' expression ';'
 
-state 19
+    '='  décalage et aller à l'état 30
 
-   15 foret: foret arbre .
 
-    $default  reduce using rule 15 (foret)
+État 19
 
+   13 var_declaration: LET partial_declaration .
 
-state 20
+    $défaut  réduction par utilisation de la règle 13 (var_declaration)
 
-   24 intermediaire: IDEN .
 
-    $default  reduce using rule 24 (intermediaire)
+État 20
 
+    0 $accept: vrai_final $end .
 
-state 21
+    $défaut  accepter
 
-   21 intermediaire: EMPTY_NODE .
 
-    $default  reduce using rule 21 (intermediaire)
+État 21
 
+    2 final_doc: final_doc doc .
 
-state 22
+    $défaut  réduction par utilisation de la règle 2 (final_doc)
 
-   23 intermediaire: arbre .
 
-    $default  reduce using rule 23 (intermediaire)
+État 22
 
+    8 var_loc_where: expression WHERE . IDEN '=' var_loc_where
+    9              | expression WHERE . IDEN '=' var_loc_in
+   10              | expression WHERE . IDEN '=' expression
 
-state 23
+    IDEN  décalage et aller à l'état 31
 
-   18 arbre: balise chaine . CLOSE
-   19 chaine: chaine . intermediaire
 
-    TAG         shift, and go to state 1
-    TEXT        shift, and go to state 2
-    IDEN        shift, and go to state 20
-    EMPTY_NODE  shift, and go to state 21
-    CLOSE       shift, and go to state 28
+État 23
 
-    arbre          go to state 22
-    intermediaire  go to state 29
-    texte          go to state 25
-    balise         go to state 13
+   19 foret: foret arbre .
 
+    $défaut  réduction par utilisation de la règle 19 (foret)
 
-state 24
 
-   20 chaine: intermediaire .
+État 24
 
-    $default  reduce using rule 20 (chaine)
+   28 intermediaire: IDEN .
 
+    $défaut  réduction par utilisation de la règle 28 (intermediaire)
 
-state 25
 
-   22 intermediaire: texte .
+État 25
 
-    $default  reduce using rule 22 (intermediaire)
+   25 intermediaire: EMPTY_NODE .
 
+    $défaut  réduction par utilisation de la règle 25 (intermediaire)
 
-state 26
 
-    8 var_loc_in: LET IDEN '=' . expression IN var_loc_in
-    9           | LET IDEN '=' . expression IN expression
-   11 partial_declaration: IDEN '=' . partial_declaration
-   12                    | IDEN '=' . expression ';'
+État 26
 
-    TAG         shift, and go to state 1
-    TEXT        shift, and go to state 2
-    IDEN        shift, and go to state 30
-    ARITH_EXPR  shift, and go to state 3
+   27 intermediaire: arbre .
 
-    partial_declaration  go to state 31
-    expression           go to state 32
-    foret                go to state 10
-    arbre                go to state 11
-    texte                go to state 12
-    balise               go to state 13
+    $défaut  réduction par utilisation de la règle 27 (intermediaire)
 
 
-state 27
+État 27
 
-    5 var_loc_where: expression WHERE IDEN . '=' var_loc_where
-    6              | expression WHERE IDEN . '=' var_loc_in
-    7              | expression WHERE IDEN . '=' expression
+   22 arbre: balise chaine . CLOSE
+   23 chaine: chaine . intermediaire
 
-    '='  shift, and go to state 33
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 24
+    EMPTY_NODE  décalage et aller à l'état 25
+    CLOSE       décalage et aller à l'état 32
 
+    arbre          aller à l'état 26
+    intermediaire  aller à l'état 33
+    texte          aller à l'état 29
+    balise         aller à l'état 16
 
-state 28
 
-   18 arbre: balise chaine CLOSE .
+État 28
 
-    $default  reduce using rule 18 (arbre)
+   24 chaine: intermediaire .
 
+    $défaut  réduction par utilisation de la règle 24 (chaine)
 
-state 29
 
-   19 chaine: chaine intermediaire .
+État 29
 
-    $default  reduce using rule 19 (chaine)
+   26 intermediaire: texte .
 
+    $défaut  réduction par utilisation de la règle 26 (intermediaire)
 
-state 30
 
-   11 partial_declaration: IDEN . '=' partial_declaration
-   12                    | IDEN . '=' expression ';'
+État 30
 
-    '='  shift, and go to state 34
+   11 var_loc_in: LET IDEN '=' . expression IN var_loc_in
+   12           | LET IDEN '=' . expression IN expression
+   14 partial_declaration: IDEN '=' . partial_declaration
+   15                    | IDEN '=' . expression ';'
 
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 34
+    ARITH_EXPR  décalage et aller à l'état 4
 
-state 31
+    partial_declaration  aller à l'état 35
+    expression           aller à l'état 36
+    foret                aller à l'état 13
+    arbre                aller à l'état 14
+    texte                aller à l'état 15
+    balise               aller à l'état 16
 
-   11 partial_declaration: IDEN '=' partial_declaration .
 
-    $default  reduce using rule 11 (partial_declaration)
+État 31
 
+    8 var_loc_where: expression WHERE IDEN . '=' var_loc_where
+    9              | expression WHERE IDEN . '=' var_loc_in
+   10              | expression WHERE IDEN . '=' expression
 
-state 32
+    '='  décalage et aller à l'état 37
 
-    8 var_loc_in: LET IDEN '=' expression . IN var_loc_in
-    9           | LET IDEN '=' expression . IN expression
-   12 partial_declaration: IDEN '=' expression . ';'
 
-    IN   shift, and go to state 35
-    ';'  shift, and go to state 36
+État 32
 
+   22 arbre: balise chaine CLOSE .
 
-state 33
+    $défaut  réduction par utilisation de la règle 22 (arbre)
 
-    5 var_loc_where: expression WHERE IDEN '=' . var_loc_where
-    6              | expression WHERE IDEN '=' . var_loc_in
-    7              | expression WHERE IDEN '=' . expression
 
-    TAG         shift, and go to state 1
-    TEXT        shift, and go to state 2
-    ARITH_EXPR  shift, and go to state 3
-    LET         shift, and go to state 37
+État 33
 
-    var_loc_where  go to state 38
-    var_loc_in     go to state 39
-    expression     go to state 40
-    foret          go to state 10
-    arbre          go to state 11
-    texte          go to state 12
-    balise         go to state 13
+   23 chaine: chaine intermediaire .
 
+    $défaut  réduction par utilisation de la règle 23 (chaine)
 
-state 34
 
-   11 partial_declaration: IDEN '=' . partial_declaration
-   12                    | IDEN '=' . expression ';'
+État 34
 
-    TAG         shift, and go to state 1
-    TEXT        shift, and go to state 2
-    IDEN        shift, and go to state 30
-    ARITH_EXPR  shift, and go to state 3
+   14 partial_declaration: IDEN . '=' partial_declaration
+   15                    | IDEN . '=' expression ';'
+   18 expression: IDEN .
 
-    partial_declaration  go to state 31
-    expression           go to state 41
-    foret                go to state 10
-    arbre                go to state 11
-    texte                go to state 12
-    balise               go to state 13
+    '='  décalage et aller à l'état 38
 
+    $défaut  réduction par utilisation de la règle 18 (expression)
 
-state 35
 
-    8 var_loc_in: LET IDEN '=' expression IN . var_loc_in
-    9           | LET IDEN '=' expression IN . expression
+État 35
 
-    TAG         shift, and go to state 1
-    TEXT        shift, and go to state 2
-    ARITH_EXPR  shift, and go to state 3
-    LET         shift, and go to state 37
+   14 partial_declaration: IDEN '=' partial_declaration .
 
-    var_loc_in  go to state 42
-    expression  go to state 43
-    foret       go to state 10
-    arbre       go to state 11
-    texte       go to state 12
-    balise      go to state 13
+    $défaut  réduction par utilisation de la règle 14 (partial_declaration)
 
 
-state 36
+État 36
 
-   12 partial_declaration: IDEN '=' expression ';' .
+   11 var_loc_in: LET IDEN '=' expression . IN var_loc_in
+   12           | LET IDEN '=' expression . IN expression
+   15 partial_declaration: IDEN '=' expression . ';'
 
-    $default  reduce using rule 12 (partial_declaration)
+    IN   décalage et aller à l'état 39
+    ';'  décalage et aller à l'état 40
 
 
-state 37
+État 37
 
-    8 var_loc_in: LET . IDEN '=' expression IN var_loc_in
-    9           | LET . IDEN '=' expression IN expression
+    8 var_loc_where: expression WHERE IDEN '=' . var_loc_where
+    9              | expression WHERE IDEN '=' . var_loc_in
+   10              | expression WHERE IDEN '=' . expression
 
-    IDEN  shift, and go to state 44
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 3
+    ARITH_EXPR  décalage et aller à l'état 4
+    LET         décalage et aller à l'état 41
 
+    var_loc_where  aller à l'état 42
+    var_loc_in     aller à l'état 43
+    expression     aller à l'état 44
+    foret          aller à l'état 13
+    arbre          aller à l'état 14
+    texte          aller à l'état 15
+    balise         aller à l'état 16
 
-state 38
 
-    5 var_loc_where: expression WHERE IDEN '=' var_loc_where .
+État 38
 
-    $default  reduce using rule 5 (var_loc_where)
+   14 partial_declaration: IDEN '=' . partial_declaration
+   15                    | IDEN '=' . expression ';'
 
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 34
+    ARITH_EXPR  décalage et aller à l'état 4
 
-state 39
+    partial_declaration  aller à l'état 35
+    expression           aller à l'état 45
+    foret                aller à l'état 13
+    arbre                aller à l'état 14
+    texte                aller à l'état 15
+    balise               aller à l'état 16
 
-    6 var_loc_where: expression WHERE IDEN '=' var_loc_in .
 
-    $default  reduce using rule 6 (var_loc_where)
+État 39
 
+   11 var_loc_in: LET IDEN '=' expression IN . var_loc_in
+   12           | LET IDEN '=' expression IN . expression
 
-state 40
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 3
+    ARITH_EXPR  décalage et aller à l'état 4
+    LET         décalage et aller à l'état 41
 
-    5 var_loc_where: expression . WHERE IDEN '=' var_loc_where
-    6              | expression . WHERE IDEN '=' var_loc_in
-    7              | expression . WHERE IDEN '=' expression
-    7              | expression WHERE IDEN '=' expression .
+    var_loc_in  aller à l'état 46
+    expression  aller à l'état 47
+    foret       aller à l'état 13
+    arbre       aller à l'état 14
+    texte       aller à l'état 15
+    balise      aller à l'état 16
 
-    WHERE  shift, and go to state 18
 
-    $default  reduce using rule 7 (var_loc_where)
+État 40
 
+   15 partial_declaration: IDEN '=' expression ';' .
 
-state 41
+    $défaut  réduction par utilisation de la règle 15 (partial_declaration)
 
-   12 partial_declaration: IDEN '=' expression . ';'
 
-    ';'  shift, and go to state 36
+État 41
 
+   11 var_loc_in: LET . IDEN '=' expression IN var_loc_in
+   12           | LET . IDEN '=' expression IN expression
 
-state 42
+    IDEN  décalage et aller à l'état 48
 
-    8 var_loc_in: LET IDEN '=' expression IN var_loc_in .
 
-    $default  reduce using rule 8 (var_loc_in)
+État 42
 
+    8 var_loc_where: expression WHERE IDEN '=' var_loc_where .
 
-state 43
+    $défaut  réduction par utilisation de la règle 8 (var_loc_where)
 
-    9 var_loc_in: LET IDEN '=' expression IN expression .
 
-    $default  reduce using rule 9 (var_loc_in)
+État 43
 
+    9 var_loc_where: expression WHERE IDEN '=' var_loc_in .
 
-state 44
+    $défaut  réduction par utilisation de la règle 9 (var_loc_where)
 
-    8 var_loc_in: LET IDEN . '=' expression IN var_loc_in
-    9           | LET IDEN . '=' expression IN expression
 
-    '='  shift, and go to state 45
+État 44
 
+    8 var_loc_where: expression . WHERE IDEN '=' var_loc_where
+    9              | expression . WHERE IDEN '=' var_loc_in
+   10              | expression . WHERE IDEN '=' expression
+   10              | expression WHERE IDEN '=' expression .
 
-state 45
+    WHERE  décalage et aller à l'état 22
 
-    8 var_loc_in: LET IDEN '=' . expression IN var_loc_in
-    9           | LET IDEN '=' . expression IN expression
+    $défaut  réduction par utilisation de la règle 10 (var_loc_where)
 
-    TAG         shift, and go to state 1
-    TEXT        shift, and go to state 2
-    ARITH_EXPR  shift, and go to state 3
 
-    expression  go to state 46
-    foret       go to state 10
-    arbre       go to state 11
-    texte       go to state 12
-    balise      go to state 13
+État 45
 
+   15 partial_declaration: IDEN '=' expression . ';'
 
-state 46
+    ';'  décalage et aller à l'état 40
 
-    8 var_loc_in: LET IDEN '=' expression . IN var_loc_in
-    9           | LET IDEN '=' expression . IN expression
 
-    IN  shift, and go to state 35
+État 46
+
+   11 var_loc_in: LET IDEN '=' expression IN var_loc_in .
+
+    $défaut  réduction par utilisation de la règle 11 (var_loc_in)
+
+
+État 47
+
+   12 var_loc_in: LET IDEN '=' expression IN expression .
+
+    $défaut  réduction par utilisation de la règle 12 (var_loc_in)
+
+
+État 48
+
+   11 var_loc_in: LET IDEN . '=' expression IN var_loc_in
+   12           | LET IDEN . '=' expression IN expression
+
+    '='  décalage et aller à l'état 49
+
+
+État 49
+
+   11 var_loc_in: LET IDEN '=' . expression IN var_loc_in
+   12           | LET IDEN '=' . expression IN expression
+
+    TAG         décalage et aller à l'état 1
+    TEXT        décalage et aller à l'état 2
+    IDEN        décalage et aller à l'état 3
+    ARITH_EXPR  décalage et aller à l'état 4
+
+    expression  aller à l'état 50
+    foret       aller à l'état 13
+    arbre       aller à l'état 14
+    texte       aller à l'état 15
+    balise      aller à l'état 16
+
+
+État 50
+
+   11 var_loc_in: LET IDEN '=' expression . IN var_loc_in
+   12           | LET IDEN '=' expression . IN expression
+
+    IN  décalage et aller à l'état 39

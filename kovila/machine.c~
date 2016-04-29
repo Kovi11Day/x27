@@ -193,7 +193,7 @@ void printing_words (FILE* result, struct ast * ast){
 void emit( char * file, struct ast * ast){
     assert(file!=NULL && (ast ==NULL || ast!= NULL));
     FILE* result;
-    result = fopen(file, "a+");
+    result = fopen(file, "w");
     printing_words(result, ast);
     fclose(result);
     return;

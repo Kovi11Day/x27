@@ -12,8 +12,7 @@ struct attributes* last_attr = NULL;
 %x ATTRIBUT
 %x TEXT_MODE_1
 %x TEXT_MODE_2
-%x TAG_MODE
-%x TAG_TYPE_MODE
+%x STD_TAG_MODE
 %x MODE_EMIT
 %x MODE_INSIDE_EMIT
 
@@ -54,50 +53,37 @@ emit {BEGIN MODE_EMIT;}
 
 {XML_space}{TAG} {fprintf(stderr, "erreur de syntaxe:TAG illicite\n"); return 1;}
 
-({TAG}"/")|({TAG}"{")|({TAG}"[") {
-  //printf("tag first time round\n");
-  //printf("tag_content:%s\n",yytext);
-  yyless(0);
-  BEGIN TAG_MODE;
-   //REJECT;
-}
-
 {TAG} {
-    printf("IDEN\n");
-    //printf("iden_content:%s\n",yytext);
-    yylval.name=strdup(yytext);
-    return IDEN;
+  yylval.name = strdup(yytext);
+  BEGIN STD_TAG_MODE;
 }
 
-<TAG_MODE>{TAG} {
-  //printf("tag first second round\n");
-  //printf("content:%s\n",yytext);
-  yylval.name = strdup(yytext);
-  BEGIN TAG_TYPE_MODE;
- }
-
-<TAG_TYPE_MODE>"/" {
+<STD_TAG_MODE>"/" {
   printf("EMPTY_NODE\n");
-  BEGIN INITIAL;
   return EMPTY_NODE;
  }
 
-<TAG_TYPE_MODE>"{" {
+<STD_TAG_MODE>"{" {
   printf("TAG\n");
   BEGIN INITIAL;
   return TAG;
  }
 
-<TAG_TYPE_MODE>"[" {
+<STD_TAG_MODE>"[" {
   printf("TAG_ATTR\n");
   //yylval.attr=create_attribute(NULL,NULL);
   //last_attr=yylval.attr;
   BEGIN ATTRIBUT;
  }
 
+<STD_TAG_MODE>. {
+  REJECT;
+  BEGIN INITIAL;
+  printf("IDEN");
+  return IDEN;
+ }
 
-[<>,;=] {printf(yytext); printf("\n");
-  return yytext[0];}
+[<>=,;] {return *yytext;}
 [+*()\-/\%\*\*|\^] {return *yytext;}
      
 \" {BEGIN TEXT_MODE_1;}
@@ -125,14 +111,9 @@ emit {BEGIN MODE_EMIT;}
   printf("VALUE\n");
 }
 
-"{" {printf("OPEN_FOREST\n");
-  return OPEN_FOREST;
-}
+"{" {printf("OPEN_FOREST\n");}
+"}" {printf("CLOSE\n");}
 
-"}" {
-  printf("CLOSE\n");
-  return CLOSE;
-}
 .|\n {;}
  
 %%

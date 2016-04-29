@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "ast.h"
-#include <string.h>
 #include <stdio.h>
 
 struct ast * mk_node(void){
@@ -115,16 +114,8 @@ struct ast * mk_declrec(char * id, struct ast * body){
 //additional------------------------------------------------------
 struct attributes* create_attribute(char* key, char* value){
 	struct attributes* att = malloc(sizeof(struct attributes));
-	if (key != NULL)
-	  att->key = mk_word(key);
-	else
-	  att->key = NULL;
-	
-	if (value != NULL)
-	  att->value = mk_word(value);
-	else
-	  att->value = NULL;
-	
+	att->key = mk_word(key);
+	att->value = mk_word(value);
 	att->next = NULL;
 	att->is_value=1;
 	return att;

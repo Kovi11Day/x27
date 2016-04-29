@@ -24,47 +24,26 @@
 %token OPEN CLOSE NUM
 %token IF CONDITION THEN ELSE
 %token<ast> ARITH_EXPR
-%token LET REC IN WHERE WITH EMITT OPEN_FOREST 
+%token LET REC IN WHERE WITH EMITT OPEN_FOREST
 
-%type<ast> balise texte intermediaire arbre chaine foret 
-%type<ast> expression partial_declaration var_loc_in var_loc_where var_declaration doc final_doc
+%type<ast> balise texte intermediaire arbre chaine foret
+%type<ast> expression partial_declaration var_loc_in var_loc_where 
 
 %left '+''-'
 %left '*''/'
 %right '^'
 %%
 
-vrai_final: final_doc 
 
-final_doc: final_doc doc {
-  //printf("final_doc--> final_doc doc\n");
-  clos = process_content($2, storage_env);
-  emit("test_emit.html", clos->value);
- }
-|doc {
-    printf("final_doc --> doc\n");
-    clos = process_content($1, storage_env);
-  emit("test_emit.html", clos->value);
-    $$ = $1;
-   }
 
-doc: var_declaration {
-  printf("doc--> var_declaration\n");
-  clos = process_content($1, storage_env);
-  emit("test_emit.html", clos->value);
-  $$ = $1;
- }
+doc: var_declaration
 |var_loc_in {
   root = $1;
  }
 |var_loc_where {
   root = $1;
  }
-|expression {
-
-  printf("doc --> expression \n");
-  $$ = $1;
- }
+|expression
 ;
 ////////////////////////////CONDITIONS///////////////////////////////////////////////
 /* expr_conditionelle: IF CONDITION THEN expr_conditionelle ELSE expr_conditionelle */
@@ -104,41 +83,31 @@ var_loc_in: LET IDEN '=' expression IN var_loc_in{
 
 
 var_declaration: LET partial_declaration{
-  $$ = $2;
   printf("var_declaration --> LET partial_declaration\n");
-  //display_graph("gtree.gv",clos->value);
+  clos = process_content($2, storage_env);
+  display_graph("gtree.gv",clos->value);
+  emit("test_emit.html", clos->value);
  } 
 
 partial_declaration: IDEN '=' partial_declaration{
-    printf("partial_declaration --> IDEN '=' partial_declaration\n");
   /* variable new_var = create_variable ($1, $3); */
   /* add_variable(str, new_var); */
   storage_env = process_binding_instruction($1, $3, storage_env);
   $$ = $3;
 }
 | IDEN '=' expression ';' {
-  printf ("partial_declaration --> IDEN '=' expression ';' \n");
    /* variable new_var = create_variable($1, $3); */
    /* add_variable(str, new_var); */
   storage_env = process_binding_instruction($1, $3, storage_env);
   $$ = $3;
 }
 ;
-
 //expression---ajouter parantheses
 
 expression: foret {
   printf("expression--> foret\n");
   $$ = $1; }
-
-| ARITH_EXPR {$$ = $1;}
-
-|IDEN {
-  $$ = mk_var($1);
-  printf("expression--> variable\n");
- }
-;
-//TO CHANGE
+| ARITH_EXPR {$$ = $1;} //TO CHANGE
 //|expr_conditionelle
 
 ///////////////////////////////FORET/////////////////////////////////////////////////
@@ -199,7 +168,7 @@ NUM
 %%
 
 int main(void){
-  storage_env = initial_env;
+
   yyparse();
   
   return 0;

@@ -5,80 +5,125 @@
 //#include "additional_ast.h"
 #include "ast.h"
 #include "x27.tab.h"
-  int fileno(FILE*);
+int fileno(FILE*);
+struct attributes* last_attr = NULL;
 %}
 
 %x ATTRIBUT
 %x TEXT_MODE_1
 %x TEXT_MODE_2
-
+%x STD_TAG_MODE
+%x MODE_EMIT
+%x MODE_INSIDE_EMIT
 
 %option noinput nounput
-
+FICHIER [[:alnum:]]+\.(html)
 IDEN [A-Za-z_][A-Za-z0-9_]*
 NB ([[:digit:]]+(\.[[:digit:]]*)?)|(\.[[:digit:]]+)
-KEY [[:alpha:]]+\=\"
-TAG ([[:alpha:]]+"{")|([[:alpha:]]+"{")
+XML_space [[:space:]]*[xX][[:space:]]*[mM][[:space:]]*[lL][[:space:]]*
+TAG (\_?[[:alnum:]]+(\.|\'|\_)*)+
+TAG_ATRIBUTE (\_?[[:alnum:]]+(\.|\'|\_)*)+
+KEY (\_?[[:alnum:]]+(\.|\'|\_)*)+
+  
 %%
+  
+fun {printf("FUN\n"); return FUN;}
+rec {printf("REC\n"); return REC; }
+let {printf("LET\n"); return LET;}
+"if" {printf("IF\n"); return IF;}
+where {printf("WHERE\n"); return WHERE;}
+in {printf("IN\n"); return IN;}
+num {printf("NUM\n"); return NUM;}
+then {printf("THEN\n"); return THEN;}
+"else" {printf("ELSE\n"); return ELSE;}
+with {printf("WITH\n"); return WITH;}
+match {printf("MATCH\n"); return MATCH;}
+emit {BEGIN MODE_EMIT;}
 
-iamanattribute {return ATTR_FOUND;}
-fun {return FUN;}
-rec {return REC;}
-let {printf("msg from lex: LET found\n"); return LET;}
-"if" {return IF;}
-where {return WHERE;}
-in  {return IN;}
-num {return NUM;}
-then {return THEN;}
-"else" {return ELSE;}
-match {return MATCH;}
+<MODE_EMIT>\" {BEGIN MODE_INSIDE_EMIT;}
+
+<MODE_INSIDE_EMIT>{FICHIER} {
+  yylval.name=strdup(yytext);
+ }
+<MODE_INSIDE_EMIT>\" {BEGIN INITIAL; return EMITT;}
 
 
-"}" {
-  printf("msg from lex: CLOSE found\n");
-  return CLOSE;}
-{IDEN} {yylval.name=strdup(yytext);
-  printf("msg from lex: IDEN found\n"); 
-  return IDEN;}
 
-{NB} {
-  yylval.value=atof(yytext);
-  return NUM;}
+{NB} {return("NUM\n");}
+
+{XML_space}{TAG} {fprintf(stderr, "erreur de syntaxe:TAG illicite\n"); return 1;}
 
 {TAG} {
-  printf("msg from lex: TAG found\n"); 
-  return TAG;
+  yylval.name = strdup(yytext);
+  BEGIN STD_TAG_MODE;
 }
 
-[>=<,;] {return *yytext;}
-[+*( ) \- / \% \*\*|\^] {return *yytext;}
+{TAG} {
+    printf("IDEN\n");
+}
+
+<STD_TAG_MODE>"/" {
+  printf("EMPTY_NODE\n");
+  return EMPTY_NODE;
+ }
+
+<STD_TAG_MODE>"{" {
+  printf("TAG\n");
+  BEGIN INITIAL;
+  return TAG;
+ }
+
+<STD_TAG_MODE>"[" {
+  printf("TAG_ATTR\n");
+  //yylval.attr=create_attribute(NULL,NULL);
+  //last_attr=yylval.attr;
+  BEGIN ATTRIBUT;
+ }
+
+<STD_TAG_MODE>[^{\[] {
+  BEGIN INITIAL;
+  printf("..............%s.................\n",yytext);
+  REJECT;
+ }
+
+[<>,;=] {printf(yytext); printf("\n");
+  return yytext[0];}
+[+*()\-/\%\*\*|\^] {return *yytext;}
      
 \" {BEGIN TEXT_MODE_1;}
 
 <TEXT_MODE_1>\" {BEGIN INITIAL;}
-
 <TEXT_MODE_1>[^\"]+ {
-  printf("msg from lex: TEXT found\n");
-  yylval.name = strdup(yytext);
+  yylval.name=strdup(yytext);
+  printf("TEXT\n");
   return TEXT;
-}
+ }
 
-<TEXT_MODE_2>\" {BEGIN ATTRIBUT;}
-
-<TEXT_MODE_2>(.|\n)+ {
-  yylval.name = strdup(yytext);
-  return VALUE;
-}
-   
-\[ {BEGIN ATTRIBUT;}
 
 <ATTRIBUT>{KEY} {
-  yylval.name = strdup(yytext);
-  return KEY;
-  BEGIN TEXT_MODE_2;
+  //last_attr = add_key_to_attr(last_attr,yytext);
+  printf("KEY\n");
+}
+<ATTRIBUT>\" {BEGIN TEXT_MODE_2;}
+<ATTRIBUT>[ =] {;}
+<ATTRIBUT>"]" {BEGIN INITIAL; return ATTR_FOUND;}
+ 
+<TEXT_MODE_2>\" {BEGIN ATTRIBUT;}
+
+<TEXT_MODE_2>[^\"]+ {
+  //last_attr=add_val_to_attr(last_attr,yytext);
+  printf("VALUE\n");
 }
 
-<ATTRIBUT>"]" {BEGIN INITIAL;}
+"{" {printf("OPEN_FOREST\n");
+  return OPEN_FOREST;
+}
 
-.|\n {;}
+"}" {
+  printf("CLOSE\n");
+  return CLOSE;
+}
+.|\n {printf("doing_nothing\n");}
+ 
 %%
+
