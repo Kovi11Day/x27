@@ -155,9 +155,13 @@ void on_fun(struct machine * m);
 void compute(struct machine * m);
 
 //additional/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void print_open_tag_with_attr(char* label);
-void print_attributes(struct attributes* attributes);
-void print_open_tag(char* label);
-void print_close_tag(char* label);
-void printing_words (struct ast * ast);
+void print_open_tag_with_attr(FILE* result, char* label);
+void print_attributes(FILE* result, struct attributes* attributes);
+void print_open_tag(FILE* result, char* label);
+void print_close_tag(FILE* result, char* label);
+void printing_words (FILE* result, struct ast * ast);
+
+void dis_gr_rec (FILE* graph, struct ast* ast, int i);
+void display_graph(char* filename, struct ast* ast);
+
 #endif

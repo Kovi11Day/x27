@@ -5,30 +5,113 @@
 #include "machine.h"
 #include "pattern_matching.h"
 
-void print_open_tag_with_attr(char* label){
-  printf("<%s ",label);
+void display_graph(char* filename, struct ast* ast){
+  FILE* graph = fopen(filename, "w");
+  fprintf(graph, "graph{\n");
+  fprintf(graph, "ratio = fill;\n");
+  fprintf(graph, "node [style=filled];\n");
+  dis_gr_rec(graph, ast, 0);
+  fprintf(graph, "}\n");
+  fclose(graph);
+}
+
+void dis_gr_rec (FILE* graph, struct ast* ast, int i){
+  enum ast_type tp = get_ast_type(ast);
+  
+  switch(tp){
+    
+  case FOREST:
+    fprintf(graph, "forest%d\n", i);
+    fprintf(graph, "forest%d [color=\"chartreuse1\"]\n", i);
+    if(ast->node->forest->head != NULL)
+      {fprintf(graph, "forest%d -- ", i); dis_gr_rec(graph, ast->node->forest->head, i+1);}
+    if(ast->node->forest->tail != NULL)
+      {fprintf(graph, "forest%d -- ", i); dis_gr_rec(graph, ast->node->forest->tail, i+2);}
+    break;
+    
+  case TREE:
+    fprintf(graph, "\"tree%d:%s\"\n", i, ast->node->tree->label);
+    if(ast->node->tree->daughters){
+      fprintf(graph, "\"tree%d:%s\" -- ", i, ast->node->tree->label);
+      dis_gr_rec(graph, ast->node->tree->daughters, i+1);
+    }
+    break;
+
+  case WORD:
+    fprintf(graph, "\"txt%d:%s\"\n", i, ast->node->str);
+    fprintf(graph, "\"txt%d:%s\" [color=\"blanchedalmond\"]\n", i, ast->node->str);
+    break;
+    
+   case DECLREC:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case COND:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case MATCH:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case FUN:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case APP:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case IMPORT:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case VAR:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case UNARYOP:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case BINOP:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  case INTEGER:
+    fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
+    exit(1);
+    break;
+  
+  }
+
   return;
 }
 
-void print_attributes(struct attributes* attributes){
+void print_open_tag_with_attr(FILE* result, char* label){
+  fprintf(result, "\n  <%s ",label);
+  return;
+}
+
+void print_attributes(FILE* result, struct attributes* attributes){
   if (attributes == NULL)
     return;
   else{
-    printf("%s=\"%s\" ", attributes->key->node->str, attributes->value->node->str );
-    print_attributes(attributes->next);
+    fprintf(result, "%s=\"%s\" ", attributes->key->node->str, attributes->value->node->str );
+    print_attributes(result, attributes->next);
   }
 }
 
-void print_open_tag(char* label){
-  printf("<%s>\n", label);
+void print_open_tag(FILE* result, char* label){
+  fprintf(result, "\n  <%s>\n", label);
 }
 
-void print_close_tag(char* label){
-  printf("</%s>", label);
+void print_close_tag(FILE* result, char* label){
+  fprintf(result, "\n  </%s>\n", label);
 }
 
 //TODO-AJOUTER QUOTES AVANT CHAINE DE TEXTE
-void printing_words (struct ast * ast){
+void printing_words (FILE* result, struct ast * ast){
   if (ast == NULL)
     return;
   
@@ -76,31 +159,31 @@ void printing_words (struct ast * ast){
     exit(1);
     break;
   case FOREST:
-    printing_words(ast->node->forest->head);
-    printing_words(ast->node->forest->tail);
+    printing_words(result, ast->node->forest->head);
+    printing_words(result, ast->node->forest->tail);
     break;
   case WORD:
-    printf("%s ", ast->node->str);
+    fprintf(result, "%s ", ast->node->str);
     break;
   case TREE:
     
     //printing open tag
     if (ast->node->tree->attributes != NULL){
       //open tag with attributes
-      print_open_tag_with_attr(ast->node->tree->label);
-      print_attributes(ast->node->tree->attributes);
+      print_open_tag_with_attr(result, ast->node->tree->label);
+      print_attributes(result, ast->node->tree->attributes);
     }else
       //open tag without attributes
-      print_open_tag(ast->node->tree->label);
+      print_open_tag(result, ast->node->tree->label);
     
     //printing content
-    printing_words(ast->node->tree->daughters);
+    printing_words(result, ast->node->tree->daughters);
     
     //printing close tag
     if (ast->node->tree->nullary == 1)
-      printf("/>");
+      fprintf(result, "/>");
     else
-      print_close_tag(ast->node->tree->label);
+      print_close_tag(result, ast->node->tree->label);
     break;
   }
   return;
@@ -110,14 +193,13 @@ void printing_words (struct ast * ast){
 void emit( char * file, struct ast * ast){
     assert(file!=NULL && (ast ==NULL || ast!= NULL));
     FILE* result;
-    result = fopen(file, "a+");
-    
-    //fprintf(result, process_instruction(ast));
+    result = fopen(file, "w");
+    printing_words(result, ast);
     fclose(result);
     return;
 }
 
-
+/////////////////////////////////////////////////////////////////////////
 struct env * mk_env(char * var, struct closure * value, struct env * next){
     struct env * res = malloc(sizeof(struct env));
     res->var = var;

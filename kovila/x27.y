@@ -24,7 +24,7 @@
 %token OPEN CLOSE NUM
 %token IF CONDITION THEN ELSE
 %token<ast> ARITH_EXPR
-%token LET REC IN WHERE
+%token LET REC IN WHERE WITH
 
 %type<ast> balise texte intermediaire arbre chaine foret
 %type<ast> expression partial_declaration var_loc_in var_loc_where 
@@ -43,6 +43,7 @@ doc: var_declaration
 |var_loc_where {
   root = $1;
  }
+|expression
 ;
 ////////////////////////////CONDITIONS///////////////////////////////////////////////
 /* expr_conditionelle: IF CONDITION THEN expr_conditionelle ELSE expr_conditionelle */
@@ -98,11 +99,12 @@ partial_declaration: IDEN '=' partial_declaration{
 ;
 //expression---ajouter parantheses
 
-expression: foret {$$ = $1;}
+expression: foret {$$ = $1; display_graph("gtree.gv",$1);  emit("test_emit.html", $1);}
 | ARITH_EXPR {$$ = $1;} //TO CHANGE
 //|expr_conditionelle
 
 ///////////////////////////////FORET/////////////////////////////////////////////////
+
 foret: foret arbre {$$ = mk_forest(1, $1, $2);}
 |arbre {
   $$ = mk_forest(0, $1, NULL);
@@ -127,8 +129,12 @@ intermediaire: EMPTY_NODE {$$ = mk_tree($1, 1, 1, 0, NULL, NULL);}
 
 texte: TEXT {$$ = mk_word($1);}
 
-balise: TAG {$$ = mk_tree($1, 1, 0, 0, NULL, NULL); printf("mk_tree node \n");}
-|TAG ATTR_FOUND {$$ = mk_tree($1, 1, 0, 0, yylval.attr, NULL);}
+balise: TAG {
+  printf("mylabel is %s\n", $1);
+  $$ = mk_tree($1, 1, 0, 0, NULL, NULL);}
+|TAG ATTR_FOUND {
+  printf("about to access attributes");
+  $$ = mk_tree($1, 1, 0, 0, yylval.attr, NULL);}
 
 //suite_cle_valeur = ATTR_FOUND
 /* suite_cle_valeur: suite_cle_valeur KEY VALUE //{$$ = add_attribute($1, $2, $3);} */
@@ -155,6 +161,7 @@ NUM
 %%
 
 int main(void){
+
   yyparse();
   
   return 0;
