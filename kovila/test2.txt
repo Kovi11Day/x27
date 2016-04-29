@@ -2,6 +2,3 @@ div{
     "Ceci est un lien qui vous conduira au " a{"LaBRI"} " à Bordeaux."
    }
 
-div{
-    "Ceci est un lien qui vous conduira au " a{"LaBRI"} " à Bordeaux."
-   }

@@ -466,10 +466,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    37,    37,    39,    44,    50,    56,    59,    62,    74,
-      79,    84,    91,    96,   105,   111,   118,   128,   134,   136,
-     147,   148,   153,   156,   158,   159,   162,   163,   164,   166,
-     169,   171,   174
+       0,    37,    37,    39,    44,    50,    54,    57,    60,    71,
+      76,    81,    88,    93,   102,   107,   114,   125,   129,   131,
+     141,   142,   145,   148,   150,   151,   154,   155,   156,   158,
+     161,   163,   166
 };
 #endif
 
@@ -1275,125 +1275,127 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 3:
+        case 2:
+#line 37 "x27.y" /* yacc.c:1646  */
+    {  printf("vrai_doc--> final_doc doc\n");}
+#line 1282 "x27.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 3:
 #line 39 "x27.y" /* yacc.c:1646  */
     {
-  //printf("final_doc--> final_doc doc\n");
-  //clos = process_content($2, storage_env);
-  //emit("test_emit.html", clos->value);
+  printf("final_doc--> final_doc doc\n");
+  clos = process_content((yyvsp[0].ast), storage_env);
+  emit("test_emit.html", clos->value);
  }
-#line 1286 "x27.tab.c" /* yacc.c:1646  */
+#line 1292 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
 #line 44 "x27.y" /* yacc.c:1646  */
     {
-    printf("final_doc --> doc\n");
-    emit("test_emit.html", (yyvsp[0].ast));
-    (yyval.ast) = (yyvsp[0].ast);
-   }
-#line 1296 "x27.tab.c" /* yacc.c:1646  */
+  printf("final_doc --> doc\n");
+  clos = process_content((yyvsp[0].ast), storage_env);
+  emit("test_emit.html", clos->value);
+ }
+#line 1302 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
 #line 50 "x27.y" /* yacc.c:1646  */
     {
   printf("doc--> var_declaration\n");
-  clos = process_content((yyvsp[0].ast), storage_env);
-  emit("test_emit.html", clos->value);
   (yyval.ast) = (yyvsp[0].ast);
  }
-#line 1307 "x27.tab.c" /* yacc.c:1646  */
+#line 1311 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 56 "x27.y" /* yacc.c:1646  */
+#line 54 "x27.y" /* yacc.c:1646  */
     {
-  root = (yyvsp[0].ast);
+  (yyval.ast) = (yyvsp[0].ast);
  }
-#line 1315 "x27.tab.c" /* yacc.c:1646  */
+#line 1319 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 59 "x27.y" /* yacc.c:1646  */
+#line 57 "x27.y" /* yacc.c:1646  */
     {
-  root = (yyvsp[0].ast);
+  (yyval.ast) = (yyvsp[0].ast);
  }
-#line 1323 "x27.tab.c" /* yacc.c:1646  */
+#line 1327 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 62 "x27.y" /* yacc.c:1646  */
+#line 60 "x27.y" /* yacc.c:1646  */
     {
-
   printf("doc --> expression \n");
   (yyval.ast) = (yyvsp[0].ast);
  }
-#line 1333 "x27.tab.c" /* yacc.c:1646  */
+#line 1336 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 74 "x27.y" /* yacc.c:1646  */
+#line 71 "x27.y" /* yacc.c:1646  */
     {
   struct ast* fun_node = mk_fun((yyvsp[-2].name), (yyvsp[-4].ast));
   struct ast* app_node = mk_app(fun_node, (yyvsp[0].ast));
   (yyval.ast) = app_node;
  }
-#line 1343 "x27.tab.c" /* yacc.c:1646  */
+#line 1346 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 79 "x27.y" /* yacc.c:1646  */
+#line 76 "x27.y" /* yacc.c:1646  */
     {
   struct ast* fun_node = mk_fun((yyvsp[-2].name), (yyvsp[-4].ast));
   struct ast* app_node = mk_app(fun_node, (yyvsp[0].ast));
   (yyval.ast) = app_node;
  }
-#line 1353 "x27.tab.c" /* yacc.c:1646  */
+#line 1356 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 84 "x27.y" /* yacc.c:1646  */
+#line 81 "x27.y" /* yacc.c:1646  */
     {
   struct ast* fun_node = mk_fun((yyvsp[-2].name), (yyvsp[-4].ast));
   struct ast* app_node = mk_app(fun_node, (yyvsp[0].ast));
   (yyval.ast) = app_node;
  }
-#line 1363 "x27.tab.c" /* yacc.c:1646  */
+#line 1366 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 91 "x27.y" /* yacc.c:1646  */
+#line 88 "x27.y" /* yacc.c:1646  */
     {
   struct ast* fun_node = mk_fun((yyvsp[-4].name), (yyvsp[0].ast));
   struct ast* app_node = mk_app(fun_node, (yyvsp[-2].ast));
   (yyval.ast) = app_node;
  }
-#line 1373 "x27.tab.c" /* yacc.c:1646  */
+#line 1376 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 96 "x27.y" /* yacc.c:1646  */
+#line 93 "x27.y" /* yacc.c:1646  */
     {
   struct ast* fun_node = mk_fun((yyvsp[-4].name), (yyvsp[0].ast));
   struct ast* app_node = mk_app(fun_node, (yyvsp[-2].ast));
   (yyval.ast) = app_node;
  }
-#line 1383 "x27.tab.c" /* yacc.c:1646  */
+#line 1386 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 105 "x27.y" /* yacc.c:1646  */
+#line 102 "x27.y" /* yacc.c:1646  */
     {
   (yyval.ast) = (yyvsp[0].ast);
   printf("var_declaration --> LET partial_declaration\n");
-  //display_graph("gtree.gv",clos->value);
  }
-#line 1393 "x27.tab.c" /* yacc.c:1646  */
+#line 1395 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 111 "x27.y" /* yacc.c:1646  */
+#line 107 "x27.y" /* yacc.c:1646  */
     {
     printf("partial_declaration --> IDEN '=' partial_declaration\n");
   /* variable new_var = create_variable ($1, $3); */
@@ -1401,11 +1403,11 @@ yyreduce:
   storage_env = process_binding_instruction((yyvsp[-2].name), (yyvsp[0].ast), storage_env);
   (yyval.ast) = (yyvsp[0].ast);
 }
-#line 1405 "x27.tab.c" /* yacc.c:1646  */
+#line 1407 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 118 "x27.y" /* yacc.c:1646  */
+#line 114 "x27.y" /* yacc.c:1646  */
     {
   printf ("partial_declaration --> IDEN '=' expression ';' \n");
    /* variable new_var = create_variable($1, $3); */
@@ -1413,123 +1415,118 @@ yyreduce:
   storage_env = process_binding_instruction((yyvsp[-3].name), (yyvsp[-1].ast), storage_env);
   (yyval.ast) = (yyvsp[-1].ast);
 }
-#line 1417 "x27.tab.c" /* yacc.c:1646  */
+#line 1419 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 128 "x27.y" /* yacc.c:1646  */
+#line 125 "x27.y" /* yacc.c:1646  */
     {
-  //clos = process_content($1, storage_env);
-
   printf("expression--> foret\n");
   (yyval.ast) = (yyvsp[0].ast); }
 #line 1427 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 134 "x27.y" /* yacc.c:1646  */
+#line 129 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = (yyvsp[0].ast);}
 #line 1433 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 136 "x27.y" /* yacc.c:1646  */
+#line 131 "x27.y" /* yacc.c:1646  */
     {
-  //clos = process_content($1, storage_env);
   (yyval.ast) = mk_var((yyvsp[0].name));
   printf("expression--> variable\n");
  }
-#line 1443 "x27.tab.c" /* yacc.c:1646  */
+#line 1442 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 147 "x27.y" /* yacc.c:1646  */
+#line 141 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = mk_forest(1, (yyvsp[-1].ast), (yyvsp[0].ast));}
-#line 1449 "x27.tab.c" /* yacc.c:1646  */
+#line 1448 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 148 "x27.y" /* yacc.c:1646  */
+#line 142 "x27.y" /* yacc.c:1646  */
     {
   (yyval.ast) = mk_forest(0, (yyvsp[0].ast), NULL);
-  //clos = process_content($$, storage_env);
-  
  }
-#line 1459 "x27.tab.c" /* yacc.c:1646  */
+#line 1456 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 153 "x27.y" /* yacc.c:1646  */
+#line 145 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = mk_forest(0, (yyvsp[0].ast), NULL);}
-#line 1465 "x27.tab.c" /* yacc.c:1646  */
+#line 1462 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 156 "x27.y" /* yacc.c:1646  */
-    {add_daughters((yyvsp[-2].ast), (yyvsp[-1].ast));}
-#line 1471 "x27.tab.c" /* yacc.c:1646  */
+#line 148 "x27.y" /* yacc.c:1646  */
+    {(yyval.ast) = add_daughters((yyvsp[-2].ast), (yyvsp[-1].ast));}
+#line 1468 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 158 "x27.y" /* yacc.c:1646  */
+#line 150 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = mk_forest(0, (yyvsp[-1].ast), (yyvsp[0].ast));}
-#line 1477 "x27.tab.c" /* yacc.c:1646  */
+#line 1474 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 159 "x27.y" /* yacc.c:1646  */
+#line 151 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = (yyvsp[0].ast);}
-#line 1483 "x27.tab.c" /* yacc.c:1646  */
+#line 1480 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 162 "x27.y" /* yacc.c:1646  */
+#line 154 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = mk_tree((yyvsp[0].name), 1, 1, 0, NULL, NULL);}
-#line 1489 "x27.tab.c" /* yacc.c:1646  */
+#line 1486 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 163 "x27.y" /* yacc.c:1646  */
+#line 155 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = (yyvsp[0].ast);}
-#line 1495 "x27.tab.c" /* yacc.c:1646  */
+#line 1492 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 164 "x27.y" /* yacc.c:1646  */
+#line 156 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = (yyvsp[0].ast);}
-#line 1501 "x27.tab.c" /* yacc.c:1646  */
+#line 1498 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 166 "x27.y" /* yacc.c:1646  */
+#line 158 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = mk_var((yyvsp[0].name));}
-#line 1507 "x27.tab.c" /* yacc.c:1646  */
+#line 1504 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 169 "x27.y" /* yacc.c:1646  */
+#line 161 "x27.y" /* yacc.c:1646  */
     {(yyval.ast) = mk_word((yyvsp[0].name));}
-#line 1513 "x27.tab.c" /* yacc.c:1646  */
+#line 1510 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 171 "x27.y" /* yacc.c:1646  */
+#line 163 "x27.y" /* yacc.c:1646  */
     {
   printf("mylabel is %s\n", (yyvsp[0].name));
   (yyval.ast) = mk_tree((yyvsp[0].name), 1, 0, 0, NULL, NULL);}
-#line 1521 "x27.tab.c" /* yacc.c:1646  */
+#line 1518 "x27.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 174 "x27.y" /* yacc.c:1646  */
+#line 166 "x27.y" /* yacc.c:1646  */
     {
   printf("about to access attributes");
   (yyval.ast) = mk_tree((yyvsp[-1].name), 1, 0, 0, yylval.attr, NULL);}
-#line 1529 "x27.tab.c" /* yacc.c:1646  */
+#line 1526 "x27.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1533 "x27.tab.c" /* yacc.c:1646  */
+#line 1530 "x27.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1757,7 +1754,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 200 "x27.y" /* yacc.c:1906  */
+#line 192 "x27.y" /* yacc.c:1906  */
 
 
 int main(void){

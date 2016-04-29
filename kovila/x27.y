@@ -34,34 +34,30 @@
 %right '^'
 %%
 
-vrai_final: final_doc 
+vrai_final: final_doc {printf("vrai_doc--> final_doc doc\n");}
 
 final_doc: final_doc doc {
-  //printf("final_doc--> final_doc doc\n");
-  clos = process_content($2, storage_env);
-  emit("test_emit.html", clos->value);
+  printf("final_doc--> final_doc doc\n");
+  //clos = process_content($2, storage_env);
+  //emit("test_emit.html", clos->value);
  }
 |doc {
-    printf("final_doc --> doc\n");
-    clos = process_content($1, storage_env);
-  emit("test_emit.html", clos->value);
-    $$ = $1;
-   }
+  printf("final_doc --> doc\n");
+  //clos = process_content($1, storage_env);
+  //emit("test_emit.html", clos->value);
+ }
 
 doc: var_declaration {
   printf("doc--> var_declaration\n");
-  clos = process_content($1, storage_env);
-  emit("test_emit.html", clos->value);
   $$ = $1;
  }
 |var_loc_in {
-  root = $1;
+  $$ = $1;
  }
 |var_loc_where {
-  root = $1;
+  $$ = $1;
  }
 |expression {
-
   printf("doc --> expression \n");
   $$ = $1;
  }
@@ -106,7 +102,6 @@ var_loc_in: LET IDEN '=' expression IN var_loc_in{
 var_declaration: LET partial_declaration{
   $$ = $2;
   printf("var_declaration --> LET partial_declaration\n");
-  //display_graph("gtree.gv",clos->value);
  } 
 
 partial_declaration: IDEN '=' partial_declaration{
@@ -128,12 +123,14 @@ partial_declaration: IDEN '=' partial_declaration{
 //expression---ajouter parantheses
 
 expression: foret {
+  clos = process_content($1, storage_env);
+  emit("test_emit.html", clos->value);
   printf("expression--> foret\n");
   $$ = $1; }
 
 | ARITH_EXPR {$$ = $1;}
 
-|IDEN {
+|IDEN{
   $$ = mk_var($1);
   printf("expression--> variable\n");
  }
@@ -146,13 +143,11 @@ expression: foret {
 foret: foret arbre {$$ = mk_forest(1, $1, $2);}
 |arbre {
   $$ = mk_forest(0, $1, NULL);
-  //clos = process_content($$, storage_env);
-  
  }
 |texte {$$ = mk_forest(0, $1, NULL);}
 ;
 /////////////////////////////ARBRE///////////////////////////////////////////////////
-arbre: balise chaine CLOSE {add_daughters($1, $2);}
+arbre: balise chaine CLOSE {$$ = add_daughters($1, $2);}
 
 chaine: chaine intermediaire {$$ = mk_forest(0, $1, $2);}
 |intermediaire {$$ = $1;}

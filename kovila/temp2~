@@ -1,0 +1,6 @@
+
+{TAG}","|{TAG}<<EOF>> {
+    printf("IDEN\n");
+    yylval.name=strdup(yytext);
+    return IDEN;
+}

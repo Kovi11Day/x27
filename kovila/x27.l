@@ -62,9 +62,9 @@ emit {BEGIN MODE_EMIT;}
    //REJECT;
 }
 
+
 {TAG} {
     printf("IDEN\n");
-    //printf("iden_content:%s\n",yytext);
     yylval.name=strdup(yytext);
     return IDEN;
 }
@@ -96,7 +96,7 @@ emit {BEGIN MODE_EMIT;}
  }
 
 
-[<>,;=] {printf(yytext); printf("\n");
+[<>;=] {printf(yytext); printf("\n");
   return yytext[0];}
 [+*()\-/\%\*\*|\^] {return *yytext;}
      
