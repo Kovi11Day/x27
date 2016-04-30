@@ -19,15 +19,20 @@
   struct ast* ast;
   struct attributes* attr;
  }
-%token<name> KEY VALUE TAG TEXT IDEN EMPTY_NODE
+%token<name> IDEN
 %token<attr> ATTR_FOUND
-%token OPEN CLOSE NUM
+%token OPEN CLOSE NUM OPEN_FOREST
 %token IF CONDITION THEN ELSE
 %token<ast> ARITH_EXPR
-%token LET REC IN WHERE WITH EMITT OPEN_FOREST 
+%token LET REC IN WHERE WITH EMITT 
+%token<name> TAG KEY VALUE TEXT EMPTY_NODE 
 
-%type<ast> balise texte intermediaire arbre chaine foret 
+
 %type<ast> expression partial_declaration var_loc_in var_loc_where var_declaration doc final_doc
+%type<ast> foret
+%type<ast> arbre  
+%type<ast> balise texte intermediaire chaine
+
 
 %left '+''-'
 %left '*''/'
@@ -40,15 +45,17 @@ final_doc: final_doc doc {
   printf("final_doc--> final_doc doc\n");
   //clos = process_content($2, storage_env);
   //emit("test_emit.html", clos->value);
+  $$ = $2;
  }
 |doc {
   printf("final_doc --> doc\n");
   //clos = process_content($1, storage_env);
   //emit("test_emit.html", clos->value);
+  $$ = $1;
  }
 
 doc: var_declaration {
-  printf("doc--> var_declaration\n");
+  printf("doc --> var_declaration\n");
   $$ = $1;
  }
 |var_loc_in {
@@ -123,51 +130,50 @@ partial_declaration: IDEN '=' partial_declaration{
 //expression---ajouter parantheses
 
 expression: foret {
-  clos = process_content($1, storage_env);
-  emit("test_emit.html", clos->value);
   printf("expression--> foret\n");
   $$ = $1; }
 
 | ARITH_EXPR {$$ = $1;}
 
-|IDEN{
-  $$ = mk_var($1);
-  printf("expression--> variable\n");
- }
+/* |IDEN ','{ */
+/*   $$ = mk_var($1); */
+/*   printf("expression--> variable\n"); */
+/*  } */
 ;
 //TO CHANGE
 //|expr_conditionelle
 
 ///////////////////////////////FORET/////////////////////////////////////////////////
 
-foret: foret arbre {$$ = mk_forest(1, $1, $2);}
+foret: OPEN_FOREST foret arbre CLOSE {$$ = mk_forest(0, $2, $2);}
 |arbre {
   $$ = mk_forest(0, $1, NULL);
  }
 |texte {$$ = mk_forest(0, $1, NULL);}
+//|OPEN_FOREST CLOSE {$$ = NULL;}
 ;
 /////////////////////////////ARBRE///////////////////////////////////////////////////
 arbre: balise chaine CLOSE {$$ = add_daughters($1, $2);}
+|IDEN ',' {$$ = mk_var($1);}
 
 chaine: chaine intermediaire {$$ = mk_forest(0, $1, $2);}
 |intermediaire {$$ = $1;}
 ;
 
-intermediaire: EMPTY_NODE {$$ = mk_tree($1, 1, 1, 0, NULL, NULL);}
+intermediaire: EMPTY_NODE {$$ = mk_tree($1, 0, 1, 0, NULL, NULL);}
 |texte {$$ = $1;}
 |arbre {$$ = $1;}
-//|declarations
-|IDEN {$$ = mk_var($1);}
+//|IDEN ',' {$$ = mk_var($1);}
 ;     
 
 texte: TEXT {$$ = mk_word($1);}
 
 balise: TAG {
   printf("mylabel is %s\n", $1);
-  $$ = mk_tree($1, 1, 0, 0, NULL, NULL);}
+  $$ = mk_tree($1, 0, 0, 0, NULL, NULL);}
 |TAG ATTR_FOUND {
   printf("about to access attributes");
-  $$ = mk_tree($1, 1, 0, 0, yylval.attr, NULL);}
+  $$ = mk_tree($1, 0, 0, 0, yylval.attr, NULL);}
 
 //suite_cle_valeur = ATTR_FOUND
 /* suite_cle_valeur: suite_cle_valeur KEY VALUE //{$$ = add_attribute($1, $2, $3);} */

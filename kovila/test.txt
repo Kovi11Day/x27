@@ -1,3 +1,7 @@
-let varname = tag{"text"};
+let LaBRI = a{"LaBRI"};
+let bdx = a{"Université de Bordeaux"};
+let email= a{"email"};
 
-varname
+div{"Le " LaBRI, " est un laboratoire de l'" bdx, "."}
+
+div2{"Pour m'écrire utilisez l'adresse " email, "."}

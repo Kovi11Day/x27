@@ -143,6 +143,7 @@ void printing_words (FILE* result, struct ast * ast){
     exit(1);
     break;
   case VAR:
+    fprintf(stderr, "from emit: var node in tree\n");
     fprintf(stderr, "tree should contain only tree, forest, word nodes\n");
     exit(1);
     break;

@@ -50,7 +50,7 @@ emit {BEGIN MODE_EMIT;}
 
 
 
-{NB} {return("NUM\n");}
+{NB} {return NUM;}
 
 {XML_space}{TAG} {fprintf(stderr, "erreur de syntaxe:TAG illicite\n"); return 1;}
 
@@ -62,11 +62,10 @@ emit {BEGIN MODE_EMIT;}
    //REJECT;
 }
 
-
 {TAG} {
-    printf("IDEN\n");
-    yylval.name=strdup(yytext);
-    return IDEN;
+  printf("IDEN\n");
+  yylval.name=strdup(yytext);
+  return IDEN;
 }
 
 <TAG_MODE>{TAG} {
@@ -96,7 +95,8 @@ emit {BEGIN MODE_EMIT;}
  }
 
 
-[<>;=] {printf(yytext); printf("\n");
+[<>;,=] {
+  printf("%s\n", yytext);
   return yytext[0];}
 [+*()\-/\%\*\*|\^] {return *yytext;}
      
