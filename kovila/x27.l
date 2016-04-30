@@ -18,7 +18,7 @@ struct attributes* last_attr = NULL;
 %x MODE_INSIDE_EMIT
 
 %option noinput nounput
-FICHIER [[:alnum:]]+\.(html)
+
 IDEN [A-Za-z_][A-Za-z0-9_]*
 NB ([[:digit:]]+(\.[[:digit:]]*)?)|(\.[[:digit:]]+)
 XML_space [[:space:]]*[xX][[:space:]]*[mM][[:space:]]*[lL][[:space:]]*
@@ -39,15 +39,16 @@ then {printf("THEN\n"); return THEN;}
 "else" {printf("ELSE\n"); return ELSE;}
 with {printf("WITH\n"); return WITH;}
 match {printf("MATCH\n"); return MATCH;}
+
 emit {BEGIN MODE_EMIT;}
 
 <MODE_EMIT>\" {BEGIN MODE_INSIDE_EMIT;}
 
-<MODE_INSIDE_EMIT>{FICHIER} {
+<MODE_INSIDE_EMIT>{TAG}\."html" {
   yylval.name=strdup(yytext);
+  printf("EMIT\n");
+  return EMITT;
  }
-<MODE_INSIDE_EMIT>\" {BEGIN INITIAL; return EMITT;}
-
 
 
 {NB} {return NUM;}

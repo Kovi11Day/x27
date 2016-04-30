@@ -1,7 +1,6 @@
-div{
-    "Ceci est un lien qui vous conduira au " a{"LaBRI"} " à Bordeaux."
-   }
-
-div{
-    "Ceci est un lien qui vous conduira au " a{"LaBRI"} " à Bordeaux."
-   }
+let ubx = a{"Université de Bordeaux"} in
+    div{"L'" ubx, " a été créée en 1441 par le pape Pape Eugène IV à 
+                   l’initiative de Pey Berland - archevêque de Bordeaux de 
+                   1430 à 1456 - l’"
+             ubx, "comptait quatre facultés : art, médecine, 
+                   droit et théologie."}

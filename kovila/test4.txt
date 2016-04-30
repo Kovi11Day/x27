@@ -1,0 +1,7 @@
+let e1 = div2{"Pour m'écrire utilisez l'adresse " email, "."};
+let e2 = div2{"Pour m'écrire utilisez l'adresse " email, "."};
+let e3 = div2{"Pour m'écrire utilisez l'adresse " email, "."};
+let e4 = div2{"Pour m'écrire utilisez l'adresse " email, "."};
+let e5 = div2{"Pour m'écrire utilisez l'adresse " email, "."};
+
+if e1, then e2, else if e3, then e4, else e5,
