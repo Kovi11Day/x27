@@ -1,4 +1,4 @@
-let LaBRI = a{"LaBRI"};
+let LaBRI = a[key="val"]{"LaBRI"};
 let bdx = a{"Université de Bordeaux"};
 let email= a{"email"};
 

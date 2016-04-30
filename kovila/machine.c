@@ -113,10 +113,10 @@ void emit( char * file, struct ast * ast){
     assert(file!=NULL && (ast ==NULL || ast!= NULL));
     FILE* result;
     result = fopen(file, "a+");
-    //fprintf(result, "<!DOCTYPE html>\n");
-    //fprintf(result, "<html>\n");
+    fprintf(result, "<!DOCTYPE html>\n");
+    fprintf(result, "<html>\n");
     printing_words(result, ast);
-    // fprintf(result, "</html>\n");
+    fprintf(result, "</html>\n");
     fclose(result);
     return;
 }

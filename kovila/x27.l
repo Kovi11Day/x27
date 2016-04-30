@@ -44,14 +44,14 @@ emit {BEGIN MODE_EMIT;}
 
 <MODE_EMIT>\" {BEGIN MODE_INSIDE_EMIT;}
 
-<MODE_INSIDE_EMIT>{TAG}\."html" {
+<MODE_INSIDE_EMIT>{IDEN}\."html" {
   yylval.name=strdup(yytext);
-  printf("EMIT\n");
-  return EMITT;
  }
 
+<MODE_INSIDE_EMIT>\" {printf("EMIT\n"); BEGIN INITIAL; return EMITT;}
 
-{NB} {return NUM;}
+
+{NB} {yylval.value = atoi(yytext);return NUM;}
 
 {XML_space}{TAG} {fprintf(stderr, "erreur de syntaxe:TAG illicite\n"); return 1;}
 
@@ -89,12 +89,13 @@ emit {BEGIN MODE_EMIT;}
  }
 
 <TAG_TYPE_MODE>"[" {
-  printf("TAG_ATTR\n");
-  //yylval.attr=create_attribute(NULL,NULL);
-  //last_attr=yylval.attr;
+
+  yylval.attr=create_attribute(NULL,NULL);
+  last_attr=yylval.attr;
   BEGIN ATTRIBUT;
  }
 
+"->" {printf("arrow\n"); return ARROW;}
 
 [<>;,=] {
   printf("%s\n", yytext);
@@ -112,17 +113,21 @@ emit {BEGIN MODE_EMIT;}
 
 
 <ATTRIBUT>{KEY} {
-  //last_attr = add_key_to_attr(last_attr,yytext);
+  last_attr = add_key_to_attr(last_attr,yytext);
   printf("KEY\n");
+  return KEY;
 }
 <ATTRIBUT>\" {BEGIN TEXT_MODE_2;}
 <ATTRIBUT>[ =] {;}
-<ATTRIBUT>"]" {BEGIN INITIAL; return ATTR_FOUND;}
+<ATTRIBUT>"]" {BEGIN INITIAL;
+  printf("TAG_ATTR\n");
+  return ATTR_FOUND;
+ }
  
 <TEXT_MODE_2>\" {BEGIN ATTRIBUT;}
 
 <TEXT_MODE_2>[^\"]+ {
-  //last_attr=add_val_to_attr(last_attr,yytext);
+  last_attr=add_val_to_attr(last_attr,yytext);
   printf("VALUE\n");
 }
 
