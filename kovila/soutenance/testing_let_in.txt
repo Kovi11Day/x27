@@ -1,0 +1,12 @@
+emit "testing_let_in.html"
+let main_title=h1{"Testing X27"} in
+    let title=h2{"Testing local variable let in"} in
+    	let para2=p{"We will try to use the variable para2 twice in the body below."} in
+    body{
+		main_title,
+		title,
+		p{ "main_title is the first local variable, we will try testing embedded let in next."}
+		para2,
+		para2,
+		p{"Note: we already have three embeded local variables in this body."}
+	}

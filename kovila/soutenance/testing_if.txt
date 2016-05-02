@@ -1,0 +1,13 @@
+emit "testing_if.html"
+if 1 then
+body{
+	h1{"Testing X27"}
+	h2{"Testing IF statement"}
+	p{"I am the" b{"then"} "branch"}
+}
+else
+body{
+	h1{"Testing X27"}
+	h2{"Testing IF statement"}
+	h3{"I am the" b{"else"} "branch"}
+}

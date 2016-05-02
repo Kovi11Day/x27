@@ -1,0 +1,8 @@
+emit "testing_where.html"
+body{
+	h1{"Testing X27"}
+	rest,
+} where rest=p{ para1, "This is the second paragraph, but the first local variable" b{"rest"}}
+  		where para1=p{title, "This is the first paragraph, but the second local variable" b{"para1."}
+		      		     "This example contains 3 embedded local variable using the" u{"where"} "syntax."}
+		      	where title=h2{"Testing local variable where"}

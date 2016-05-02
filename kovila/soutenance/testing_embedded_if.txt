@@ -1,0 +1,36 @@
+emit "testing_embedded_if.html"
+
+if 0 then
+
+	if 1 then
+	body{
+		h1{"Testing X27"}
+		h2{"Testing IF statement"}
+		p{"I am the" b{"then"} "branch of the first" u{"if"}
+		"and also the" b{"then"} "branch of the second" u{"if."}}
+	}	
+
+	else
+	body{
+		h1{"Testing X27"}
+		h2{"Testing IF statement"}
+		p{"I am the" b{"then"} "branch of the first" u{"if"}
+		"and also the" b{"else"} "branch of the second" u{"if."}}
+	}
+else
+
+	if 1 then
+	body{
+		h1{"Testing X27"}
+		h2{"Testing IF statement"}
+		p{"I am the" b{"else"} "branch of the first" u{"if"}
+		"and also the" b{"then"} "branch of the second" u{"if."}}
+	}
+	else
+	body{
+		h1{"Testing X27"}
+		h2{"Testing IF statement"}
+		p{"I am the" b{"else"} "branch of the first" u{"if"}
+		"and also the" b{"else"} "branch of the second" u{"if."}}
+	}
+

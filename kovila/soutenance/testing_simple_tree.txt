@@ -1,0 +1,25 @@
+emit "testing_simple_tree.html"
+body{
+	h1{"Testing X27"}
+
+	h2{"Testing Emit"}
+	p{
+		    ul{
+			li{"If you can see this page EMIT is working."}
+			li{"Note that the file in which you emit must have an html extension."}
+			}
+
+	}
+
+	h2{"Testing trees"}
+
+	p{
+		ul{ 
+			li{"This test contains trees whose children are either text or embedded trees."}
+			li{"The" "trees" "can alse contain a sequence" "of text and trees." }
+			li{"This language is practical as you don't have to close tags every time."}
+			}
+	}
+	
+}
+

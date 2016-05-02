@@ -1,0 +1,10 @@
+body{content,} where content = let title =
+
+	       h1{"Testing X27"} in let sub_title = 
+	       
+	       h2{"Testing mixture of local variables"} in
+
+	       {title,
+	       sub_title,
+	       }
+	      

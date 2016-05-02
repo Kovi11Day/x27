@@ -1,0 +1,27 @@
+
+emit "testing_single_var_declarations.html"
+
+	let variable1 =
+	body{
+		h1{"Testing X27"}
+
+		h2{"Declaring single variable using let"}
+
+	p{
+		    ul{
+			li{"I am variable1"}
+			li{"I have already been declared."}
+			li{"If you can see me then this test is working."}
+			}
+	}
+
+	};
+
+	variable1,
+
+
+
+
+
+	
+

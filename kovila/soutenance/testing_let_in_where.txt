@@ -1,0 +1,18 @@
+emit "testing_let_in_where.html"
+let main_title=h1{"Testing X27"} in
+    let title=h2{"Testing local variable let in and where"} in
+    	body{
+		main_title,
+		title,
+	p{
+		"For the title and subtitle above, we have used
+		two local variables"
+		b{"main_title"} "and" b{"title"} "which have been declared
+		using the" u{"let in"} "syntax." 
+	
+	}
+	para2,
+	}where para2=p{"bahae"}
+ 
+
+	

@@ -1,0 +1,25 @@
+emit "testing_multiple_var_declarations.html"
+
+	let variable2=variable3=variable4=
+
+body{
+	h1{"Testing X27"}
+
+	h2{"Declaring multiple variables using let"}
+
+	p{
+		ul{
+			li{"I could be variable2 variable3 or variable4"}
+			li{"But if you can see me the multiple declaration is working fine." }
+			li{"Having multiple variables being declared in one go is really paractical."}
+			li{"You will probably have to read this 3 times but is means I am working!."}
+		}
+	}
+};
+
+	variable2, variable3, variable4,
+	
+
+
+	
+
